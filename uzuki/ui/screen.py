@@ -3,6 +3,7 @@ from uzuki.core.buffer import Buffer
 from uzuki.core.cursor import Cursor
 from uzuki.core.history import History
 from uzuki.input.handler import InputHandler
+from uzuki.input.sequence_manager import KeySequenceManager
 from uzuki.modes.normal_mode import NormalMode
 from uzuki.modes.insert_mode import InsertMode
 from uzuki.commands.command_mode import CommandMode
@@ -25,6 +26,7 @@ class Screen:
         # 入力処理
         self.input_handler = InputHandler(self)
         self.keymap = KeyMapManager(self)
+        self.sequence_manager = KeySequenceManager()
         
         # 状態
         self.filename = 'untitled.txt'
@@ -38,7 +40,25 @@ class Screen:
         while self.running:
             self.draw()
             raw = stdscr.getch()
-            self.input_handler.handle(raw)
+            self._handle_key(raw)
+
+    def _handle_key(self, raw_code: int):
+        """キー入力を処理（シーケンス対応）"""
+        key_info = self.input_handler.create_key_info(raw_code)
+        
+        # キーシーケンスを管理
+        sequence = self.sequence_manager.add_key(key_info.key_name)
+        
+        # キーマップでアクションを検索
+        action = self.keymap.get_action(self.mode.mode_name, sequence)
+        if action:
+            action()
+            self.sequence_manager.clear()  # シーケンスをクリア
+        else:
+            # シーケンスが1文字の場合のみデフォルト処理
+            if len(sequence) == 1:
+                self.mode.handle_default(key_info)
+            # 複数文字のシーケンスでマッチしない場合は何もしない（タイムアウトを待つ）
 
     def draw(self):
         """画面を描画"""
@@ -55,7 +75,9 @@ class Screen:
             status = f":{self.mode.cmd_buf}"
         else:
             # Normal/Insert mode: ステータスを表示
-            status = f"--{self.mode.__class__.__name__.upper()}-- {self.filename} {self.cursor.row+1}:{self.cursor.col+1}"
+            sequence = self.sequence_manager.get_sequence()
+            sequence_display = f" [{sequence}]" if sequence else ""
+            status = f"--{self.mode.__class__.__name__.upper()}-- {self.filename} {self.cursor.row+1}:{self.cursor.col+1}{sequence_display}"
         
         self.stdscr.addstr(h-1, 0, status[:w-1], curses.A_REVERSE)
         self.stdscr.move(self.cursor.row, self.cursor.col)
@@ -76,6 +98,9 @@ class Screen:
             self.mode = self.insert_mode
         elif mode_name == 'command':
             self.mode = self.command_mode
+        
+        # モード切り替え時にシーケンスをクリア
+        self.sequence_manager.clear()
 
     def quit(self):
         """エディタを終了"""

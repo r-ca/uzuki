@@ -10,21 +10,30 @@ class DefaultKeyMaps:
     @staticmethod
     def get_normal_mode_bindings():
         return {
+            # ナビゲーション
             'h': 'move_left',
             'j': 'move_down', 
             'k': 'move_up',
             'l': 'move_right',
+            
+            # モード切り替え
             'i': 'enter_insert_mode',
+            ':': 'enter_command_mode',
+            
+            # 編集操作（単一キー）
             'x': 'delete_char',
             'o': 'new_line_below',
             'O': 'new_line_above',
             'a': 'append',
             'A': 'append_end',
-            'dd': 'delete_line',
-            'yy': 'yank_line',
             'p': 'paste',
             'P': 'paste_before',
-            ':': 'enter_command_mode',
+            
+            # 編集操作（複数キー）
+            'dd': 'delete_line',
+            'yy': 'yank_line',
+            
+            # その他
             'escape': 'noop',
         }
     

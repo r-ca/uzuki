@@ -9,11 +9,10 @@ class KeyInfo:
         self.is_printable = raw_code < 256
 
 class InputHandler:
-    """生キーコード取得とモードへの振り分け"""
+    """キー情報作成クラス"""
     def __init__(self, screen):
         self.screen = screen
 
-    def handle(self, raw_code: int):
-        """キー入力を処理"""
-        key_info = KeyInfo(raw_code)
-        self.screen.mode.handle_key_info(key_info)
+    def create_key_info(self, raw_code: int) -> KeyInfo:
+        """KeyInfoオブジェクトを作成"""
+        return KeyInfo(raw_code)

@@ -110,11 +110,12 @@ class KeyMapManager:
         self.keymaps = [km for km in self.keymaps 
                        if not (km['mode'] == mode and km['key'] == key)]
     
-    def get_action(self, mode: str, key: str) -> Callable:
-        """キーに対応するアクションを取得"""
-        # 現在のモードのキーマップを検索
-        for keymap in self.keymaps:
-            if keymap['mode'] == mode and keymap['key'] == key:
+    def get_action(self, mode: str, key_sequence: str) -> Callable:
+        """キーシーケンスに対応するアクションを取得（最長一致）"""
+        # 最長一致で検索（キーの長さで降順ソート）
+        for keymap in sorted(self.keymaps, key=lambda x: len(x['key']), reverse=True):
+            if (keymap['mode'] == mode and 
+                key_sequence.endswith(keymap['key'])):
                 action = keymap['action']
                 if callable(action):
                     return action
@@ -122,8 +123,9 @@ class KeyMapManager:
                     return self._get_action_handler(mode, action)
         
         # グローバルキーマップを検索
-        for keymap in self.keymaps:
-            if keymap['mode'] == 'global' and keymap['key'] == key:
+        for keymap in sorted(self.keymaps, key=lambda x: len(x['key']), reverse=True):
+            if (keymap['mode'] == 'global' and 
+                key_sequence.endswith(keymap['key'])):
                 action = keymap['action']
                 if callable(action):
                     return action
