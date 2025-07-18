@@ -9,8 +9,8 @@ class LineNumberDisplay:
         self.line_number_width = 4
         self.current_line_highlight = True
         self.line_number_style = curses.A_DIM
-        # カレント行ハイライトを薄いシアン色で
-        self.current_line_style = curses.A_DIM | curses.color_pair(6) if curses.has_colors() else curses.A_DIM
+        # カレント行ハイライトをより控えめに
+        self.current_line_style = curses.A_DIM
         self.separator = "│"
         self.separator_style = curses.A_DIM
     
@@ -64,10 +64,11 @@ class LineNumberDisplay:
             # 行番号をフォーマット
             line_num_str = self.format_line_number(line_num, line_num_width)
             
-            # 行番号を描画
-            stdscr.addstr(y, start_x, line_num_str, self.line_number_style)
+            # 行番号を描画（幅チェック）
+            if start_x + len(line_num_str) <= max_width:
+                stdscr.addstr(y, start_x, line_num_str, self.line_number_style)
             
-            # 区切り文字を描画
+            # 区切り文字を描画（幅チェック）
             separator_x = start_x + line_num_width
             if separator_x < start_x + max_width:
                 stdscr.addstr(y, separator_x, self.separator, self.separator_style)
@@ -86,7 +87,8 @@ class LineNumberDisplay:
             y = start_y + cursor_row
             
             # 行全体をハイライト（より控えめなスタイル）
-            line_content = " " * line_width
+            safe_width = min(line_width, max_height)  # 安全な幅を計算
+            line_content = " " * safe_width
             stdscr.addstr(y, start_x, line_content, self.current_line_style)
 
 class LineHighlighter:
@@ -184,9 +186,15 @@ class LineDisplayManager:
             # 行のスタイルを取得
             line_style = self.highlighter.get_line_style(i + 1) or curses.A_NORMAL
             
-            # 行を描画（幅に収まるように切り詰め）
+            # 行を描画（幅に収まるように切り詰め、安全な描画）
             display_line = line[:content_width]
-            stdscr.addstr(y, content_start_x, display_line, line_style)
+            try:
+                stdscr.addstr(y, content_start_x, display_line, line_style)
+            except curses.error:
+                # 画面端でのエラーを防ぐ
+                safe_line = display_line[:content_width-1]
+                if safe_line:
+                    stdscr.addstr(y, content_start_x, safe_line, line_style)
         
         # カレント行をハイライト
         self.line_numbers.highlight_current_line(
@@ -202,12 +210,22 @@ class LineDisplayManager:
     def _render_ruler(self, stdscr, cursor_col: int, start_y: int, 
                      start_x: int, width: int, height: int):
         """ルーラー（列番号）を描画"""
-        # 10文字ごとにマーカーを表示
-        for col in range(0, width, 10):
-            if col < width:
-                marker = str(col + 1)
-                if col + len(marker) <= width:
-                    stdscr.addstr(start_y, start_x + col, marker, self.ruler_style)
+        if height < 2:
+            return
+        
+        # ルーラー行
+        ruler_y = start_y + height - 1
+        ruler_text = ""
+        
+        for i in range(0, width, 10):
+            ruler_text += str(i).ljust(10)
+        
+        # 安全な描画
+        safe_ruler = ruler_text[:width]
+        try:
+            stdscr.addstr(ruler_y, start_x, safe_ruler, self.ruler_style)
+        except curses.error:
+            pass
     
     def toggle_line_numbers(self):
         """行番号表示を切り替え"""
@@ -226,6 +244,5 @@ class LineDisplayManager:
         return {
             'line_numbers': self.line_numbers.show_line_numbers,
             'current_line_highlight': self.line_numbers.current_line_highlight,
-            'ruler': self.show_ruler,
-            'highlighted_lines': len(self.highlighter.highlighted_lines),
+            'ruler': self.show_ruler
         } 

@@ -18,10 +18,11 @@ from uzuki.keymaps.manager import KeyMapManager
 from uzuki.ui.status_line import StatusLineManager, StatusLineBuilder
 from uzuki.ui.notification import NotificationManager, NotificationRenderer, NotificationLevel
 from uzuki.ui.line_numbers import LineDisplayManager
+from uzuki.utils.screen_utils import GreetingRenderer, PresetAsciiArt
 
 class Screen:
     """メインのスクリーン管理クラス"""
-    def __init__(self, initial_file: Optional[str] = None):
+    def __init__(self, initial_file: Optional[str] = None, show_greeting: bool = True):
         # コアコンポーネント
         self.buffer = Buffer()
         self.cursor = Cursor()
@@ -51,10 +52,12 @@ class Screen:
         self.notifications = NotificationManager()
         self.notification_renderer = NotificationRenderer(self.notifications)
         self.line_display = LineDisplayManager()
+        self.greeting = GreetingRenderer()
         
         # 状態
         self.running = True
         self.needs_redraw = True
+        self.show_greeting = show_greeting
         
         # 初期ファイルの読み込み
         if initial_file:
@@ -104,6 +107,10 @@ class Screen:
                 NotificationLevel.WARNING: curses.A_DIM | curses.color_pair(3),
                 NotificationLevel.ERROR: curses.A_DIM | curses.color_pair(1),
             })
+        
+        # Greeting表示
+        if self.show_greeting:
+            self._show_greeting()
         
         while self.running:
             # 画面を描画
@@ -449,3 +456,39 @@ class Screen:
     def _on_cursor_move(self):
         """カーソル移動時の処理"""
         self.needs_redraw = True
+
+    def _show_greeting(self):
+        """Greetingを表示"""
+        # デフォルトのコンテンツを設定
+        self.greeting.set_content([
+            "Welcome to Uzuki",
+            "A Vim-like text editor in Python",
+            "",
+            "Press any key to continue..."
+        ])
+        
+        # Greetingを表示
+        if self.greeting.render_greeting(self.stdscr):
+            # キー入力を待つ
+            self.stdscr.getch()
+
+    # Greeting操作
+    def set_greeting_content(self, lines: List[str]):
+        """Greetingのコンテンツを設定"""
+        self.greeting.set_content(lines)
+    
+    def add_greeting_content_line(self, line: str):
+        """Greetingのコンテンツ行を追加"""
+        self.greeting.add_content_line(line)
+    
+    def clear_greeting_content(self):
+        """Greetingのコンテンツをクリア"""
+        self.greeting.clear_content()
+    
+    def set_greeting_bottom_text(self, text: str):
+        """Greetingの下部テキストを設定"""
+        self.greeting.set_bottom_text(text)
+    
+    def set_show_greeting(self, show: bool):
+        """Greeting表示の有効/無効を設定"""
+        self.show_greeting = show

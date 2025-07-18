@@ -1,63 +1,77 @@
-import curses
-import sys
+#!/usr/bin/env python3
+"""
+Uzuki - A Vim-like text editor in Python
+"""
+
 import argparse
+import sys
+import curses
+from typing import Optional
 from uzuki.ui.screen import Screen
 
-def parse_arguments():
-    """コマンドライン引数を解析"""
+def main():
+    """メイン関数"""
     parser = argparse.ArgumentParser(
-        description='Uzuki - A Vim-like text editor',
+        description="Uzuki - A Vim-like text editor in Python",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  uzuki                    # 新規ファイルで起動
-  uzuki file.txt          # ファイルを開く
-  uzuki /path/to/file.py  # 絶対パスでファイルを開く
-  uzuki .                 # カレントディレクトリのファイルブラウザーを開く
-  uzuki /path/to/dir      # 指定ディレクトリのファイルブラウザーを開く
+  uzuki                    # Start editor
+  uzuki file.txt          # Open file.txt
+  uzuki /path/to/dir      # Open file browser in directory
+  uzuki --no-greeting     # Start without greeting screen
         """
     )
     
     parser.add_argument(
         'file',
         nargs='?',
-        help='File to open or directory to browse'
+        help='File or directory to open'
     )
     
     parser.add_argument(
         '--encoding',
         '-e',
         default='utf-8',
-        help='Default encoding (default: utf-8)'
+        help='File encoding (default: utf-8)'
     )
     
     parser.add_argument(
         '--version',
         '-v',
         action='version',
-        version='Uzuki 0.1.0'
+        version='Uzuki v0.1.0'
     )
     
-    return parser.parse_args()
-
-def main():
-    """メイン関数"""
-    args = parse_arguments()
+    parser.add_argument(
+        '--no-greeting',
+        action='store_true',
+        help='Start without greeting screen'
+    )
     
-    # 初期ファイル/ディレクトリを設定
-    initial_path = args.file
+    args = parser.parse_args()
     
-    def run_editor(stdscr):
-        screen = Screen(initial_path)
-        screen.run(stdscr)
-    
+    # エディタを開始
     try:
-        curses.wrapper(run_editor)
+        # スクリーンを作成
+        screen = Screen(
+            initial_file=args.file,
+            show_greeting=not args.no_greeting
+        )
+        
+        # エンコーディングを設定
+        if args.encoding:
+            screen.file_manager.encoding = args.encoding
+        
+        # cursesでエディタを実行
+        curses.wrapper(screen.run)
+        
     except KeyboardInterrupt:
-        print("\nUzuki terminated by user.")
+        print("\nInterrupted by user")
+        sys.exit(1)
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
