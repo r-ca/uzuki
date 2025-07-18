@@ -1,5 +1,6 @@
 from uzuki.modes.base_mode import BaseMode
 from uzuki.commands.registry import CommandRegistry
+from uzuki.ui.notification import NotificationLevel
 
 class CommandMode(BaseMode):
     """Command mode - コマンド実行モード"""
@@ -27,13 +28,13 @@ class CommandMode(BaseMode):
         """コマンドを実行"""
         cmd = self.cmd_buf.strip()
         try:
-            self.screen.set_message(f"Executing command: {cmd}")
+            self.screen.notify_info(f"Executing: {cmd}")
             CommandRegistry.execute(self.screen, cmd)
         except SystemExit:
             # 終了コマンドハンドリング
             raise
         except Exception as e:
-            self.screen.set_message(f"Error executing command: {e}")
+            self.screen.notify_error(f"Command error: {e}")
         finally:
             self.screen.set_mode('normal')
             self.cmd_buf = ''
