@@ -1,33 +1,40 @@
-from uzuki.input.keycodes import Key
 from uzuki.modes.base_mode import BaseMode
 from uzuki.commands.registry import CommandRegistry
 
 class CommandMode(BaseMode):
     def __init__(self, screen):
-        super().__init__(screen)
+        super().__init__(screen, 'command')
         self.cmd_buf = ''
-
-    def handle_key(self, key: Key, raw_code=None):
-        if key == Key.ENTER:
-            cmd = self.cmd_buf.strip()
-            try:
-                self.screen.set_message(f"Executing command: {cmd}")
-                CommandRegistry.execute(self.screen, cmd)
-            except SystemExit:
-                # 終了コマンドハンドリング
-                raise
-            except Exception as e:
-                self.screen.set_message(f"Error executing command: {e}")
-            finally:
-                self.screen.mode = self.screen.normal_mode
-                self.cmd_buf = ''
-        elif key == Key.ESC:
-            self.screen.mode = self.screen.normal_mode
+    
+    def get_action_handlers(self):
+        """Command modeのアクションハンドラー"""
+        return {
+            'enter_normal_mode': lambda: self.screen.set_mode('normal'),
+            'execute_command': self._execute_command,
+            'delete_backward': self._delete_backward,
+        }
+    
+    def handle_default(self, key_info):
+        """デフォルト処理：文字入力"""
+        if key_info.is_printable and key_info.char:
+            self.cmd_buf += key_info.char
+    
+    def _execute_command(self):
+        """コマンドを実行"""
+        cmd = self.cmd_buf.strip()
+        try:
+            self.screen.set_message(f"Executing command: {cmd}")
+            CommandRegistry.execute(self.screen, cmd)
+        except SystemExit:
+            # 終了コマンドハンドリング
+            raise
+        except Exception as e:
+            self.screen.set_message(f"Error executing command: {e}")
+        finally:
+            self.screen.set_mode('normal')
             self.cmd_buf = ''
-        elif key == Key.BACKSP:
-            if self.cmd_buf:
-                self.cmd_buf = self.cmd_buf[:-1]
-        elif key == Key.RAW and raw_code is not None:
-            if raw_code < 256:  # 印字可能文字のみ
-                char = chr(raw_code)
-                self.cmd_buf += char
+    
+    def _delete_backward(self):
+        """バックスペース処理"""
+        if self.cmd_buf:
+            self.cmd_buf = self.cmd_buf[:-1]

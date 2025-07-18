@@ -1,34 +1,73 @@
-from uzuki.core.buffer import Buffer
-from uzuki.core.cursor import Cursor
-from uzuki.input.keycodes import Key
 from uzuki.modes.base_mode import BaseMode
 
 class NormalMode(BaseMode):
     def __init__(self, screen):
-        super().__init__(screen)
-        self.cmd_buf = ''
-
-    def handle_key(self, key: Key, raw_code=None):
-        buf = self.screen.buffer
-        cur = self.screen.cursor
-        # h/j/k/l
-        if key == Key.H:
-            cur.move(0, -1, buf)
-        elif key == Key.J:
-            cur.move(1, 0, buf)
-        elif key == Key.K:
-            cur.move(-1, 0, buf)
-        elif key == Key.L:
-            cur.move(0, 1, buf)
-        # i, x, o, :
-        elif key == Key.I:
-            self.screen.mode = self.screen.insert_mode
-        elif key == Key.X:
-            buf.delete(cur.row, cur.col)
-        elif key == Key.O:
-            buf.split_line(cur.row, cur.col)
-            cur.move(1, -cur.col, buf)
-            self.screen.mode = self.screen.insert_mode
-        elif key == Key.COLON:
-            self.cmd_buf = ''
-            self.screen.mode = self.screen.command_mode
+        super().__init__(screen, 'normal')
+    
+    def get_action_handlers(self):
+        """Normal modeのアクションハンドラー"""
+        return {
+            'move_left': lambda: self.screen.cursor.move(0, -1, self.screen.buffer),
+            'move_down': lambda: self.screen.cursor.move(1, 0, self.screen.buffer),
+            'move_up': lambda: self.screen.cursor.move(-1, 0, self.screen.buffer),
+            'move_right': lambda: self.screen.cursor.move(0, 1, self.screen.buffer),
+            'enter_insert_mode': lambda: self.screen.set_mode('insert'),
+            'delete_char': lambda: self.screen.buffer.delete(self.screen.cursor.row, self.screen.cursor.col),
+            'new_line_below': self._new_line_below,
+            'new_line_above': self._new_line_above,
+            'append': self._append,
+            'append_end': self._append_end,
+            'delete_line': self._delete_line,
+            'yank_line': self._yank_line,
+            'paste': self._paste,
+            'paste_before': self._paste_before,
+            'enter_command_mode': lambda: self.screen.set_mode('command'),
+            'noop': lambda: None,
+        }
+    
+    def _new_line_below(self):
+        """現在行の下に新しい行を挿入"""
+        self.screen.buffer.split_line(self.screen.cursor.row, self.screen.cursor.col)
+        self.screen.cursor.move(1, -self.screen.cursor.col, self.screen.buffer)
+        self.screen.set_mode('insert')
+    
+    def _new_line_above(self):
+        """現在行の上に新しい行を挿入"""
+        if self.screen.cursor.row > 0:
+            self.screen.cursor.move(-1, 0, self.screen.buffer)
+        self.screen.buffer.split_line(self.screen.cursor.row, 0)
+        self.screen.set_mode('insert')
+    
+    def _append(self):
+        """現在位置の後に挿入モードに入る"""
+        self.screen.cursor.move(0, 1, self.screen.buffer)
+        self.screen.set_mode('insert')
+    
+    def _append_end(self):
+        """行末に挿入モードに入る"""
+        line = self.screen.buffer.lines[self.screen.cursor.row]
+        self.screen.cursor.col = len(line)
+        self.screen.set_mode('insert')
+    
+    def _delete_line(self):
+        """現在行を削除"""
+        if len(self.screen.buffer.lines) > 1:
+            del self.screen.buffer.lines[self.screen.cursor.row]
+            if self.screen.cursor.row >= len(self.screen.buffer.lines):
+                self.screen.cursor.row = len(self.screen.buffer.lines) - 1
+            self.screen.cursor.col = min(self.screen.cursor.col, len(self.screen.buffer.lines[self.screen.cursor.row]))
+    
+    def _yank_line(self):
+        """現在行をヤンク（コピー）"""
+        # TODO: クリップボード機能の実装
+        pass
+    
+    def _paste(self):
+        """現在位置の後にペースト"""
+        # TODO: クリップボード機能の実装
+        pass
+    
+    def _paste_before(self):
+        """現在位置の前にペースト"""
+        # TODO: クリップボード機能の実装
+        pass
