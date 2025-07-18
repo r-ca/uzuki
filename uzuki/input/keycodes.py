@@ -51,3 +51,17 @@ class Key:
             return chr(code)
         
         return f'key_{code}'
+    
+    @staticmethod
+    def is_combo_key(key_name: str) -> bool:
+        """コンボキーかどうかを判定"""
+        return key_name.startswith('ctrl_') or key_name.startswith('shift_')
+    
+    @staticmethod
+    def get_combo_prefix(key_name: str) -> str:
+        """コンボキーのプレフィックスを取得"""
+        if key_name.startswith('ctrl_'):
+            return 'ctrl_'
+        elif key_name.startswith('shift_'):
+            return 'shift_'
+        return ""

@@ -112,10 +112,36 @@ class KeyMapManager:
     
     def has_potential_mapping(self, mode: str, sequence: str) -> bool:
         """指定されたシーケンスで始まるマッピングが存在するかチェック"""
+        from uzuki.input.keycodes import Key
+        
+        # モード固有のマッピングをチェック
         for keymap in self.keymaps:
-            if (keymap['mode'] == mode and 
-                keymap['key'].startswith(sequence)):
-                return True
+            if keymap['mode'] == mode:
+                key = keymap['key']
+                
+                # コンボキーの場合、プレフィックスが一致するかチェック
+                if Key.is_combo_key(key):
+                    prefix = Key.get_combo_prefix(key)
+                    if sequence.startswith(prefix):
+                        return True
+                # 通常のキーの場合
+                elif key.startswith(sequence):
+                    return True
+        
+        # グローバルマッピングもチェック
+        for keymap in self.keymaps:
+            if keymap['mode'] == 'global':
+                key = keymap['key']
+                
+                # コンボキーの場合、プレフィックスが一致するかチェック
+                if Key.is_combo_key(key):
+                    prefix = Key.get_combo_prefix(key)
+                    if sequence.startswith(prefix):
+                        return True
+                # 通常のキーの場合
+                elif key.startswith(sequence):
+                    return True
+        
         return False
     
     def get_action(self, mode: str, key_sequence: str) -> Callable:
