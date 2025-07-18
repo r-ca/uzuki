@@ -25,22 +25,30 @@ class InsertMode(BaseMode):
             cur = self.screen.cursor
             buf.insert(cur.row, cur.col, key_info.char)
             cur.move(0, 1, buf)
+            # 画面更新フラグを設定
+            self.screen.needs_redraw = True
     
     def _new_line(self):
         """新しい行を挿入"""
         self.screen.buffer.split_line(self.screen.cursor.row, self.screen.cursor.col)
         self.screen.cursor.move(1, -self.screen.cursor.col, self.screen.buffer)
+        # 画面更新フラグを設定
+        self.screen.needs_redraw = True
     
     def _delete_backward(self):
         """後方削除"""
         if self.screen.cursor.col > 0:
             self.screen.buffer.delete(self.screen.cursor.row, self.screen.cursor.col - 1)
             self.screen.cursor.move(0, -1, self.screen.buffer)
+            # 画面更新フラグを設定
+            self.screen.needs_redraw = True
     
     def _indent(self):
         """インデント"""
         self.screen.buffer.insert(self.screen.cursor.row, 0, '    ')
         self.screen.cursor.move(0, 4, self.screen.buffer)
+        # 画面更新フラグを設定
+        self.screen.needs_redraw = True
     
     def _unindent(self):
         """アンインデント"""

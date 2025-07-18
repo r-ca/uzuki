@@ -23,6 +23,8 @@ class CommandMode(BaseMode):
         """デフォルト処理：文字入力"""
         if key_info.is_printable and key_info.char:
             self.cmd_buf += key_info.char
+            # 画面更新フラグを設定
+            self.screen.needs_redraw = True
     
     def _execute_command(self):
         """コマンドを実行"""
@@ -43,3 +45,5 @@ class CommandMode(BaseMode):
         """バックスペース処理"""
         if self.cmd_buf:
             self.cmd_buf = self.cmd_buf[:-1]
+            # 画面更新フラグを設定
+            self.screen.needs_redraw = True

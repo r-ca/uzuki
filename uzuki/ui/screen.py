@@ -116,7 +116,7 @@ class Screen:
             self._show_greeting()
         
         while self.running:
-            # 画面を描画
+            # 画面を描画（毎回描画するように変更）
             self.draw()
             
             # キー入力を待つ
@@ -140,8 +140,9 @@ class Screen:
             # アクション実行後に画面を再描画
             self.draw()
         elif self.keymap.has_potential_mapping(self.mode.mode_name, sequence):
-            # 潜在的なマッピングがある場合は待つ（何もしない）
-            pass
+            # 潜在的なマッピングがある場合は待つが、画面更新フラグが設定されていれば描画
+            if self.needs_redraw:
+                self.draw()
         else:
             # マッピングがない場合は即座にデフォルト処理
             if len(sequence) == 1:
@@ -152,9 +153,6 @@ class Screen:
 
     def draw(self):
         """画面を描画"""
-        if not self.needs_redraw:
-            return
-            
         self.stdscr.erase()
         h, w = self.stdscr.getmaxyx()
         
