@@ -36,3 +36,9 @@ class Screen:
         self.stdscr.addstr(h-1, 0, status[:w-1], curses.A_REVERSE)
         self.stdscr.move(self.cursor.row, self.cursor.col)
         self.stdscr.refresh()
+
+    def set_message(self, message: str):
+        h, w = self.stdscr.getmaxyx()
+        self.stdscr.addstr(h-1, 0, message[:w-1], curses.A_BOLD)
+        self.stdscr.refresh()
+        self.stdscr.getch()
