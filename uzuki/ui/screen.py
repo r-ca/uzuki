@@ -49,16 +49,21 @@ class Screen:
         # キーシーケンスを管理
         sequence = self.sequence_manager.add_key(key_info.key_name)
         
-        # キーマップでアクションを検索
+        # アクションを検索
         action = self.keymap.get_action(self.mode.mode_name, sequence)
+        
         if action:
+            # アクションが見つかったら即座に実行
             action()
-            self.sequence_manager.clear()  # シーケンスをクリア
+            self.sequence_manager.clear()
+        elif self.keymap.has_potential_mapping(self.mode.mode_name, sequence):
+            # 潜在的なマッピングがある場合は待つ（何もしない）
+            pass
         else:
-            # シーケンスが1文字の場合のみデフォルト処理
+            # マッピングがない場合は即座にデフォルト処理
             if len(sequence) == 1:
                 self.mode.handle_default(key_info)
-            # 複数文字のシーケンスでマッチしない場合は何もしない（タイムアウトを待つ）
+            self.sequence_manager.clear()
 
     def draw(self):
         """画面を描画"""

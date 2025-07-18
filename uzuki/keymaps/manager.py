@@ -110,6 +110,14 @@ class KeyMapManager:
         self.keymaps = [km for km in self.keymaps 
                        if not (km['mode'] == mode and km['key'] == key)]
     
+    def has_potential_mapping(self, mode: str, sequence: str) -> bool:
+        """指定されたシーケンスで始まるマッピングが存在するかチェック"""
+        for keymap in self.keymaps:
+            if (keymap['mode'] == mode and 
+                keymap['key'].startswith(sequence)):
+                return True
+        return False
+    
     def get_action(self, mode: str, key_sequence: str) -> Callable:
         """キーシーケンスに対応するアクションを取得（最長一致）"""
         # 最長一致で検索（キーの長さで降順ソート）
