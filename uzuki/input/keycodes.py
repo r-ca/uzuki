@@ -12,6 +12,11 @@ class Key(Enum):
     ESC    = 27
     ENTER  = 10
     BACKSP = 127
+    SPACE = ord(' ')
+    LEFT   = curses.KEY_LEFT
+    RIGHT  = curses.KEY_RIGHT
+    UP     = curses.KEY_UP
+    DOWN   = curses.KEY_DOWN
     COLON  = ord(':')
     U      = ord('u')
     P      = ord('p')
