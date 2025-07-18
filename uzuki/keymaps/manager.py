@@ -3,12 +3,16 @@ import importlib.util
 from typing import Dict, Any, Callable, List, Union
 
 class Mode:
-    """モード定数"""
+    """モード定数 - Neovim風のAPI"""
     NORMAL = 'normal'
     INSERT = 'insert'
     COMMAND = 'command'
     FILE_BROWSER = 'file_browser'
     GLOBAL = 'global'
+    
+    # 便利なエイリアス
+    VISUAL = 'visual'  # 将来的な拡張用
+    TERMINAL = 'terminal'  # 将来的な拡張用
 
 class KeyMapManager:
     """キーマップ管理クラス - Neovim風のAPIを提供"""
@@ -55,6 +59,20 @@ class KeyMapManager:
         """複数モードからキーマップを削除"""
         for mode in modes:
             self.remove_keymap(mode, key)
+    
+    def load_from_config(self, config: Dict[str, Any]):
+        """設定からキーマップを読み込み"""
+        # 既存のキーマップをクリア
+        self.keymaps.clear()
+        
+        # デフォルトキーマップを再読み込み
+        self._load_default_keymaps()
+        
+        # 設定からキーマップを読み込み
+        for mode, bindings in config.items():
+            if isinstance(bindings, dict):
+                for key, action in bindings.items():
+                    self.add_keymap(mode, key, action)
     
     def _load_default_keymaps(self):
         """デフォルトキーマップを読み込み"""

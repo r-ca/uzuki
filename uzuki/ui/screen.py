@@ -19,10 +19,11 @@ from uzuki.ui.status_line import StatusLineManager, StatusLineBuilder
 from uzuki.ui.notification import NotificationManager, NotificationRenderer, NotificationLevel
 from uzuki.ui.line_numbers import LineDisplayManager
 from uzuki.utils.screen_utils import GreetingRenderer, PresetAsciiArt
+from uzuki.config import ConfigManager
 
 class Screen:
     """メインのスクリーン管理クラス"""
-    def __init__(self, initial_file: Optional[str] = None, show_greeting: bool = True):
+    def __init__(self, initial_file: Optional[str] = None, show_greeting: bool = True, config_file: Optional[str] = None):
         # コアコンポーネント
         self.buffer = Buffer()
         self.cursor = Cursor()
@@ -46,6 +47,9 @@ class Screen:
         self.keymap = KeyMapManager(self)
         self.sequence_manager = KeySequenceManager()
         
+        # 設定システム（キーマップマネージャーを渡す）
+        self.config_manager = ConfigManager(config_file, keymap_manager=self.keymap)
+        
         # UI管理
         self.status_line = StatusLineManager()
         self.status_builder = StatusLineBuilder(self.status_line)
@@ -59,9 +63,40 @@ class Screen:
         self.needs_redraw = True
         self.show_greeting = show_greeting
         
+        # 設定を適用
+        self._apply_config()
+        
         # 初期ファイルの読み込み
         if initial_file:
             self._load_initial_file(initial_file)
+
+    def _apply_config(self):
+        """設定を適用"""
+        # エディタ設定
+        editor_config = self.config_manager.get_editor_config()
+        self.file_manager.encoding = editor_config.get('default_encoding', 'utf-8')
+        
+        # 表示設定
+        display_config = self.config_manager.get_display_config()
+        if not display_config.get('line_numbers', True):
+            self.line_display.toggle_line_numbers()
+        if not display_config.get('current_line_highlight', True):
+            self.line_display.toggle_current_line_highlight()
+        
+        # 通知設定
+        notification_config = self.config_manager.get_notification_config()
+        self.notifications.max_notifications = notification_config.get('max_notifications', 5)
+        
+        # Greeting設定
+        greeting_config = self.config_manager.get_greeting_config()
+        if greeting_config.get('content'):
+            self.greeting.set_content(greeting_config['content'])
+        if greeting_config.get('bottom_text'):
+            self.greeting.set_bottom_text(greeting_config['bottom_text'])
+        
+        # キーマップ設定
+        keymap_config = self.config_manager.get_keymap_config()
+        self.keymap.load_from_config(keymap_config)
 
     def _load_initial_file(self, filepath: str):
         """初期ファイルを読み込み"""
@@ -493,3 +528,35 @@ class Screen:
     def set_show_greeting(self, show: bool):
         """Greeting表示の有効/無効を設定"""
         self.show_greeting = show
+
+    # 設定操作
+    def get_config(self, section: str = None, key: str = None):
+        """設定値を取得"""
+        if section is None:
+            return self.config_manager.get_all_config()
+        elif key is None:
+            return self.config_manager.get_section(section)
+        else:
+            return self.config_manager.get_value(section, key)
+    
+    def set_config(self, section: str, key: str, value):
+        """設定値を設定"""
+        self.config_manager.set_value(section, key, value)
+        self._apply_config()
+    
+    def reset_config(self, section: str = None):
+        """設定をリセット"""
+        if section:
+            self.config_manager.reset_section(section)
+        else:
+            self.config_manager.reset_all()
+        self._apply_config()
+    
+    def import_config(self, filepath: str):
+        """設定をインポート"""
+        self.config_manager.import_config(filepath)
+        self._apply_config()
+    
+    def print_config(self, section: str = None):
+        """設定を表示"""
+        self.config_manager.print_config(section)

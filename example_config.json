@@ -1,0 +1,117 @@
+{
+  "editor": {
+    "tab_size": 4,
+    "expand_tabs": true,
+    "auto_indent": true,
+    "show_greeting": true,
+    "default_encoding": "utf-8"
+  },
+  "display": {
+    "line_numbers": true,
+    "current_line_highlight": true,
+    "ruler": false,
+    "status_line": true,
+    "notifications": true,
+    "notification_duration": 3.0
+  },
+  "highlight": {
+    "current_line_style": "dim",
+    "error_line_style": "dim_red",
+    "warning_line_style": "dim_yellow",
+    "info_line_style": "dim_blue",
+    "success_line_style": "dim_green",
+    "line_number_style": "dim",
+    "separator_style": "dim"
+  },
+  "keymap": {
+    "normal": {
+      "i": "enter_insert_mode",
+      "a": "append_after_cursor",
+      "A": "append_end_of_line",
+      "o": "new_line_below",
+      "O": "new_line_above",
+      "x": "delete_character",
+      "dd": "delete_line",
+      "yy": "yank_line",
+      "p": "paste_after",
+      "P": "paste_before",
+      "u": "undo",
+      "Ctrl+r": "redo",
+      "h": "move_left",
+      "j": "move_down",
+      "k": "move_up",
+      "l": "move_right",
+      "0": "move_beginning_of_line",
+      "$": "move_end_of_line",
+      "^": "move_first_non_blank",
+      "gg": "move_beginning_of_file",
+      "G": "move_end_of_file",
+      ":": "enter_command_mode",
+      "Ctrl+e": "open_file_browser",
+      "Ctrl+l": "toggle_line_numbers",
+      "Ctrl+h": "toggle_current_line_highlight",
+      "Ctrl+r": "toggle_ruler",
+      "Ctrl+s": "save_file",
+      "Ctrl+q": "quit"
+    },
+    "insert": {
+      "Escape": "enter_normal_mode",
+      "Ctrl+c": "enter_normal_mode",
+      "Enter": "new_line",
+      "Backspace": "delete_backward",
+      "Tab": "indent",
+      "Shift+Tab": "unindent"
+    },
+    "command": {
+      "Escape": "enter_normal_mode",
+      "Ctrl+c": "enter_normal_mode",
+      "Enter": "execute_command",
+      "Backspace": "delete_backward"
+    },
+    "file_browser": {
+      "Escape": "exit_browser",
+      "Ctrl+c": "exit_browser",
+      "Enter": "select_file",
+      "h": "move_up",
+      "j": "move_down",
+      "k": "move_up",
+      "l": "move_down",
+      "g": "move_beginning",
+      "G": "move_end",
+      "f": "enter_filter_mode",
+      "a": "toggle_hidden_files",
+      "s": "sort_files"
+    }
+  },
+  "file": {
+    "auto_save": false,
+    "backup_files": true,
+    "backup_extension": ".bak",
+    "auto_reload": false,
+    "encoding_detection": true
+  },
+  "search": {
+    "case_sensitive": false,
+    "highlight_matches": true,
+    "incremental_search": true
+  },
+  "notification": {
+    "levels": ["info", "success", "warning", "error"],
+    "max_notifications": 5,
+    "position": "bottom"
+  },
+  "status_line": {
+    "segments": ["mode", "filename", "position", "encoding", "line_count"],
+    "separator": " | ",
+    "alignment": "left"
+  },
+  "greeting": {
+    "content": [
+      "Welcome to Uzuki",
+      "A Vim-like text editor in Python",
+      "",
+      "Press any key to continue..."
+    ],
+    "bottom_text": ""
+  }
+} 
