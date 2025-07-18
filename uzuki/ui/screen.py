@@ -32,7 +32,15 @@ class Screen:
         h, w = self.stdscr.getmaxyx()
         for idx, line in enumerate(self.buffer.lines[:h-1]):
             self.stdscr.addstr(idx, 0, line)
-        status = f"--{self.mode.__class__.__name__.upper()}-- {self.filename} {self.cursor.row+1}:{self.cursor.col+1}"
+        
+        # Status line
+        if isinstance(self.mode, self.command_mode.__class__):
+            # Command mode: show command buffer
+            status = f":{self.mode.cmd_buf}"
+        else:
+            # Normal/Insert mode: show status
+            status = f"--{self.mode.__class__.__name__.upper()}-- {self.filename} {self.cursor.row+1}:{self.cursor.col+1}"
+        
         self.stdscr.addstr(h-1, 0, status[:w-1], curses.A_REVERSE)
         self.stdscr.move(self.cursor.row, self.cursor.col)
         self.stdscr.refresh()

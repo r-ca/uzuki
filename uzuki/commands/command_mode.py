@@ -7,10 +7,11 @@ class CommandMode(BaseMode):
         super().__init__(screen)
         self.cmd_buf = ''
 
-    def handle_key(self, key: Key):
+    def handle_key(self, key: Key, raw_code=None):
         if key == Key.ENTER:
             cmd = self.cmd_buf.strip()
             try:
+                self.screen.set_message(f"Executing command: {cmd}")
                 CommandRegistry.execute(self.screen, cmd)
             except SystemExit:
                 # 終了コマンドハンドリング
@@ -23,5 +24,10 @@ class CommandMode(BaseMode):
         elif key == Key.ESC:
             self.screen.mode = self.screen.normal_mode
             self.cmd_buf = ''
-        else:
-            self.cmd_buf += chr(key.value) if key.value < 256 else ''
+        elif key == Key.BACKSP:
+            if self.cmd_buf:
+                self.cmd_buf = self.cmd_buf[:-1]
+        elif key == Key.RAW and raw_code is not None:
+            if raw_code < 256:  # 印字可能文字のみ
+                char = chr(raw_code)
+                self.cmd_buf += char

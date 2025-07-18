@@ -8,7 +8,7 @@ class NormalMode(BaseMode):
         super().__init__(screen)
         self.cmd_buf = ''
 
-    def handle_key(self, key: Key):
+    def handle_key(self, key: Key, raw_code=None):
         buf = self.screen.buffer
         cur = self.screen.cursor
         # h/j/k/l
