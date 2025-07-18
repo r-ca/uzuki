@@ -1,4 +1,4 @@
-from .manager import KeyMapManager
+from .manager import KeyMapManager, Mode
 from .default import DefaultKeyMaps
 
-__all__ = ['KeyMapManager', 'DefaultKeyMaps'] 
+__all__ = ['KeyMapManager', 'Mode', 'DefaultKeyMaps'] 
