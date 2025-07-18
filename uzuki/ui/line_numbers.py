@@ -98,14 +98,42 @@ class LineHighlighter:
         self.highlighted_lines = set()  # ハイライトする行番号
         # より控えめなハイライトスタイル
         self.highlight_style = curses.A_DIM
-        # エラー行は薄い赤色
-        self.error_line_style = curses.A_DIM | curses.color_pair(1) if curses.has_colors() else curses.A_DIM
-        # 警告行は薄い黄色
-        self.warning_line_style = curses.A_DIM | curses.color_pair(3) if curses.has_colors() else curses.A_DIM
-        # 情報行は薄い青色
-        self.info_line_style = curses.A_DIM | curses.color_pair(4) if curses.has_colors() else curses.A_DIM
-        # 成功行は薄い緑色
-        self.success_line_style = curses.A_DIM | curses.color_pair(2) if curses.has_colors() else curses.A_DIM
+        # 色スタイルは初期化時に設定（curses初期化後）
+        self.error_line_style = None
+        self.warning_line_style = None
+        self.info_line_style = None
+        self.success_line_style = None
+        self._colors_initialized = False
+    
+    def _init_colors(self):
+        """色を初期化（curses初期化後に呼び出し）"""
+        if self._colors_initialized:
+            return
+        
+        try:
+            if curses.has_colors():
+                # エラー行は薄い赤色
+                self.error_line_style = curses.A_DIM | curses.color_pair(1)
+                # 警告行は薄い黄色
+                self.warning_line_style = curses.A_DIM | curses.color_pair(3)
+                # 情報行は薄い青色
+                self.info_line_style = curses.A_DIM | curses.color_pair(4)
+                # 成功行は薄い緑色
+                self.success_line_style = curses.A_DIM | curses.color_pair(2)
+            else:
+                # 色が使えない場合はすべてA_DIM
+                self.error_line_style = curses.A_DIM
+                self.warning_line_style = curses.A_DIM
+                self.info_line_style = curses.A_DIM
+                self.success_line_style = curses.A_DIM
+        except:
+            # エラーが発生した場合はすべてA_DIM
+            self.error_line_style = curses.A_DIM
+            self.warning_line_style = curses.A_DIM
+            self.info_line_style = curses.A_DIM
+            self.success_line_style = curses.A_DIM
+        
+        self._colors_initialized = True
     
     def add_highlight(self, line_num: int, style: Optional[int] = None):
         """行をハイライトに追加"""
@@ -128,18 +156,22 @@ class LineHighlighter:
     
     def highlight_error_line(self, line_num: int):
         """エラー行をハイライト"""
+        self._init_colors()
         self.add_highlight(line_num, self.error_line_style)
     
     def highlight_warning_line(self, line_num: int):
         """警告行をハイライト"""
+        self._init_colors()
         self.add_highlight(line_num, self.warning_line_style)
     
     def highlight_info_line(self, line_num: int):
         """情報行をハイライト"""
+        self._init_colors()
         self.add_highlight(line_num, self.info_line_style)
     
     def highlight_success_line(self, line_num: int):
         """成功行をハイライト"""
+        self._init_colors()
         self.add_highlight(line_num, self.success_line_style)
     
     def set_highlight_style(self, style: int):

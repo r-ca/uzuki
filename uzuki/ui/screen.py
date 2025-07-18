@@ -108,6 +108,9 @@ class Screen:
                 NotificationLevel.ERROR: curses.A_DIM | curses.color_pair(1),
             })
         
+        # LineHighlighterの色を初期化
+        self.line_display.highlighter._init_colors()
+        
         # Greeting表示
         if self.show_greeting:
             self._show_greeting()

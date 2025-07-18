@@ -10,8 +10,11 @@ def test_greeting():
     """Greetingのテスト"""
     
     def run_test(stdscr):
+        # cursesの初期化
+        curses.curs_set(0)  # カーソルを非表示
+        
         # スクリーンを作成（Greeting表示あり）
-        screen = Screen(show_greeting=True)
+        screen = Screen(show_greeting=False)  # Greetingは手動で表示
         
         # 基本的なGreeting
         screen.set_greeting_content([
