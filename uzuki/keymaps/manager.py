@@ -10,9 +10,10 @@ class Mode:
     GLOBAL = 'global'
 
 class KeyMapManager:
+    """キーマップ管理クラス - Neovim風のAPIを提供"""
     def __init__(self, screen):
         self.screen = screen
-        self.keymaps = []
+        self.keymaps = []  # フラットなリストで管理
         
         # デフォルトキーマップを読み込み
         self._load_default_keymaps()
@@ -147,19 +148,6 @@ class KeyMapManager:
             return mode_obj.get_action_handlers().get(action_name)
         
         return None
-    
-    def _get_mode_handlers(self, mode: str) -> Dict[str, Callable]:
-        """モード別のアクションハンドラーを取得"""
-        mode_map = {
-            'normal': self.screen.normal_mode,
-            'insert': self.screen.insert_mode,
-            'command': self.screen.command_mode,
-        }
-        
-        mode_obj = mode_map.get(mode)
-        if mode_obj and hasattr(mode_obj, 'get_action_handlers'):
-            return mode_obj.get_action_handlers()
-        return {}
     
     def _get_global_handlers(self) -> Dict[str, Callable]:
         """グローバルアクションハンドラーを取得"""

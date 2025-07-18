@@ -2,6 +2,7 @@ from uzuki.modes.base_mode import BaseMode
 from uzuki.commands.registry import CommandRegistry
 
 class CommandMode(BaseMode):
+    """Command mode - コマンド実行モード"""
     def __init__(self, screen):
         super().__init__(screen, 'command')
         self.cmd_buf = ''
@@ -9,7 +10,10 @@ class CommandMode(BaseMode):
     def get_action_handlers(self):
         """Command modeのアクションハンドラー"""
         return {
+            # モード切り替え
             'enter_normal_mode': lambda: self.screen.set_mode('normal'),
+            
+            # コマンド実行
             'execute_command': self._execute_command,
             'delete_backward': self._delete_backward,
         }

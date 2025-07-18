@@ -1,17 +1,24 @@
 from uzuki.modes.base_mode import BaseMode
 
 class NormalMode(BaseMode):
+    """Normal mode - メインのナビゲーションモード"""
     def __init__(self, screen):
         super().__init__(screen, 'normal')
     
     def get_action_handlers(self):
         """Normal modeのアクションハンドラー"""
         return {
+            # ナビゲーション
             'move_left': lambda: self.screen.cursor.move(0, -1, self.screen.buffer),
             'move_down': lambda: self.screen.cursor.move(1, 0, self.screen.buffer),
             'move_up': lambda: self.screen.cursor.move(-1, 0, self.screen.buffer),
             'move_right': lambda: self.screen.cursor.move(0, 1, self.screen.buffer),
+            
+            # モード切り替え
             'enter_insert_mode': lambda: self.screen.set_mode('insert'),
+            'enter_command_mode': lambda: self.screen.set_mode('command'),
+            
+            # 編集操作
             'delete_char': lambda: self.screen.buffer.delete(self.screen.cursor.row, self.screen.cursor.col),
             'new_line_below': self._new_line_below,
             'new_line_above': self._new_line_above,
@@ -21,7 +28,8 @@ class NormalMode(BaseMode):
             'yank_line': self._yank_line,
             'paste': self._paste,
             'paste_before': self._paste_before,
-            'enter_command_mode': lambda: self.screen.set_mode('command'),
+            
+            # その他
             'noop': lambda: None,
         }
     

@@ -5,7 +5,7 @@ class BaseMode:
         self.mode_name = mode_name
 
     def handle_key_info(self, key_info):
-        """新しいキー処理システム"""
+        """キー情報を処理"""
         # キーマップからアクションを取得
         action = self.screen.keymap.get_action(self.mode_name, key_info.key_name)
         if action:
@@ -15,7 +15,7 @@ class BaseMode:
             self.handle_default(key_info)
     
     def handle_default(self, key_info):
-        """デフォルトのキー処理"""
+        """デフォルトのキー処理（サブクラスでオーバーライド）"""
         pass
     
     def get_action_handlers(self):

@@ -1,13 +1,17 @@
 from uzuki.modes.base_mode import BaseMode
 
 class InsertMode(BaseMode):
+    """Insert mode - テキスト入力モード"""
     def __init__(self, screen):
         super().__init__(screen, 'insert')
     
     def get_action_handlers(self):
         """Insert modeのアクションハンドラー"""
         return {
+            # モード切り替え
             'enter_normal_mode': lambda: self.screen.set_mode('normal'),
+            
+            # 編集操作
             'new_line': self._new_line,
             'delete_backward': self._delete_backward,
             'indent': self._indent,
