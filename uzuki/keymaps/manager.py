@@ -7,6 +7,7 @@ class Mode:
     NORMAL = 'normal'
     INSERT = 'insert'
     COMMAND = 'command'
+    FILE_BROWSER = 'file_browser'
     GLOBAL = 'global'
 
 class KeyMapManager:
@@ -32,6 +33,10 @@ class KeyMapManager:
     def command(self, key: str, action: Union[str, Callable]):
         """Command modeのキーマップを設定"""
         self.add_keymap('command', key, action)
+    
+    def file_browser(self, key: str, action: Union[str, Callable]):
+        """File Browser modeのキーマップを設定"""
+        self.add_keymap('file_browser', key, action)
     
     def set(self, modes: List[str], key: str, action: Union[str, Callable]):
         """複数モードに同時にキーマップを設定"""
@@ -64,6 +69,7 @@ class KeyMapManager:
             ('normal', DefaultKeyMaps.get_normal_mode_bindings()),
             ('insert', DefaultKeyMaps.get_insert_mode_bindings()),
             ('command', DefaultKeyMaps.get_command_mode_bindings()),
+            ('file_browser', DefaultKeyMaps.get_file_browser_bindings()),
         ]:
             for key, action in bindings.items():
                 self.add_keymap(mode, key, action)
@@ -174,6 +180,7 @@ class KeyMapManager:
             'normal': self.screen.normal_mode,
             'insert': self.screen.insert_mode,
             'command': self.screen.command_mode,
+            'file_browser': self.screen.file_browser_mode,
             'global': None,  # グローバルは特別処理
         }
         
@@ -189,5 +196,5 @@ class KeyMapManager:
         """グローバルアクションハンドラーを取得"""
         return {
             'quit': lambda: self.screen.quit(),
-            'save': lambda: self.screen.save(),
+            'save': lambda: self.screen.save_file(),
         } 

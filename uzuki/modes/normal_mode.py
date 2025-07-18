@@ -17,6 +17,7 @@ class NormalMode(BaseMode):
             # モード切り替え
             'enter_insert_mode': lambda: self.screen.set_mode('insert'),
             'enter_command_mode': lambda: self.screen.set_mode('command'),
+            'open_file_browser': self._open_file_browser,
             
             # 編集操作
             'delete_char': lambda: self.screen.buffer.delete(self.screen.cursor.row, self.screen.cursor.col),
@@ -32,6 +33,10 @@ class NormalMode(BaseMode):
             # その他
             'noop': lambda: None,
         }
+    
+    def _open_file_browser(self):
+        """ファイルブラウザーを開く"""
+        self.screen.open_file_browser()
     
     def _new_line_below(self):
         """現在行の下に新しい行を挿入"""

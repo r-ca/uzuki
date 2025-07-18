@@ -1,27 +1,32 @@
 import curses
 import time
+import sys
+import os
 from typing import Optional, List, Tuple
 from uzuki.core.buffer import Buffer
 from uzuki.core.cursor import Cursor
 from uzuki.core.history import History
 from uzuki.core.file_manager import FileManager
+from uzuki.core.file_selector import FileSelector
 from uzuki.input.handler import InputHandler
 from uzuki.input.sequence_manager import KeySequenceManager
 from uzuki.modes.normal_mode import NormalMode
 from uzuki.modes.insert_mode import InsertMode
 from uzuki.commands.command_mode import CommandMode
+from uzuki.modes.file_browser_mode import FileBrowserMode
 from uzuki.keymaps.manager import KeyMapManager
 from uzuki.ui.status_line import StatusLineManager, StatusLineBuilder
 from uzuki.ui.notification import NotificationManager, NotificationRenderer, NotificationLevel
 
 class Screen:
     """メインのスクリーン管理クラス"""
-    def __init__(self):
+    def __init__(self, initial_file: Optional[str] = None):
         # コアコンポーネント
         self.buffer = Buffer()
         self.cursor = Cursor()
         self.history = History()
         self.file_manager = FileManager()
+        self.file_selector = FileSelector()
         
         # 変更通知コールバックを設定
         self.buffer.set_change_callback(self._on_buffer_change)
@@ -31,6 +36,7 @@ class Screen:
         self.normal_mode = NormalMode(self)
         self.insert_mode = InsertMode(self)
         self.command_mode = CommandMode(self)
+        self.file_browser_mode = FileBrowserMode(self)
         self.mode = self.normal_mode
         
         # 入力処理
@@ -47,6 +53,29 @@ class Screen:
         # 状態
         self.running = True
         self.needs_redraw = True
+        
+        # 初期ファイルの読み込み
+        if initial_file:
+            self._load_initial_file(initial_file)
+
+    def _load_initial_file(self, filepath: str):
+        """初期ファイルを読み込み"""
+        try:
+            # パスを解決
+            resolved_path = self.file_selector.resolve_path(filepath)
+            
+            if os.path.isfile(resolved_path):
+                self.load_file(resolved_path)
+            elif os.path.isdir(resolved_path):
+                # ディレクトリの場合はファイルブラウザーを開く
+                self.file_selector.change_directory(resolved_path)
+                self.file_browser_mode.enter_browser('normal')
+            else:
+                # ファイルが存在しない場合は新規作成
+                self.file_manager.filename = resolved_path
+                self.notify_info(f"New file: {resolved_path}")
+        except Exception as e:
+            self.notify_error(f"Failed to load initial file: {e}")
 
     def run(self, stdscr):
         """メインループ"""
@@ -114,6 +143,17 @@ class Screen:
         self.stdscr.erase()
         h, w = self.stdscr.getmaxyx()
         
+        # モードに応じて描画内容を変更
+        if isinstance(self.mode, self.file_browser_mode.__class__):
+            self._draw_file_browser(h, w)
+        else:
+            self._draw_editor(h, w)
+        
+        self.stdscr.refresh()
+        self.needs_redraw = False
+
+    def _draw_editor(self, h: int, w: int):
+        """エディタ画面を描画"""
         # バッファ内容を描画
         for idx, line in enumerate(self.buffer.lines[:h-2]):  # 通知エリアとステータスラインの分を引く
             self.stdscr.addstr(idx, 0, line)
@@ -128,8 +168,45 @@ class Screen:
         # ステータスラインを描画
         self.stdscr.addstr(h-1, 0, status_text[:w-1], curses.A_REVERSE)
         self.stdscr.move(self.cursor.row, self.cursor.col)
-        self.stdscr.refresh()
-        self.needs_redraw = False
+
+    def _draw_file_browser(self, h: int, w: int):
+        """ファイルブラウザー画面を描画"""
+        # ヘッダー
+        header = f"File Browser - {self.file_selector.get_current_directory()}"
+        self.stdscr.addstr(0, 0, header[:w-1], curses.A_BOLD)
+        
+        # ファイル一覧
+        display_files = self.file_browser_mode.browser.get_display_files(h-4)
+        
+        for i, (name, path, is_dir, is_selected) in enumerate(display_files):
+            if i + 2 >= h - 2:  # ステータスラインの分を引く
+                break
+            
+            # アイコンと名前
+            icon = "📁 " if is_dir else "📄 "
+            display_name = icon + name
+            
+            # 選択状態のスタイル
+            style = curses.A_REVERSE if is_selected else curses.A_NORMAL
+            
+            # ディレクトリの場合は太字
+            if is_dir:
+                style |= curses.A_BOLD
+            
+            self.stdscr.addstr(i + 2, 0, display_name[:w-1], style)
+        
+        # フィルタ情報
+        if self.file_browser_mode.filter_mode:
+            filter_info = f"Filter: {self.file_browser_mode.filter_text}"
+            self.stdscr.addstr(h-3, 0, filter_info[:w-1], curses.A_BOLD)
+        
+        # ステータスライン
+        status_info = self.file_browser_mode.get_status_info()
+        status_text = f"Files: {status_info['total_files']} | Hidden: {'ON' if status_info['show_hidden'] else 'OFF'}"
+        if status_info['selected_file']:
+            status_text += f" | Selected: {os.path.basename(status_info['selected_file'])}"
+        
+        self.stdscr.addstr(h-1, 0, status_text[:w-1], curses.A_REVERSE)
 
     def _build_status_line(self):
         """ステータスラインを構築"""
@@ -170,6 +247,8 @@ class Screen:
             self.mode = self.insert_mode
         elif mode_name == 'command':
             self.mode = self.command_mode
+        elif mode_name == 'file_browser':
+            self.mode = self.file_browser_mode
         
         # モード切り替え時にシーケンスをクリア
         self.sequence_manager.clear()
@@ -215,6 +294,15 @@ class Screen:
             self.needs_redraw = True
         except ValueError as e:
             self.notifications.add(str(e), NotificationLevel.ERROR)
+
+    # ファイルブラウザー操作
+    def open_file_browser(self, directory: Optional[str] = None):
+        """ファイルブラウザーを開く"""
+        if directory:
+            self.file_selector.change_directory(directory)
+        
+        current_mode = self.mode.mode_name
+        self.file_browser_mode.enter_browser(current_mode)
 
     # 通知システム（ピュアなAPI）
     def notify(self, message: str, level: NotificationLevel = NotificationLevel.INFO, 
