@@ -17,6 +17,7 @@ from uzuki.modes.file_browser_mode import FileBrowserMode
 from uzuki.keymaps.manager import KeyMapManager
 from uzuki.ui.status_line import StatusLineManager, StatusLineBuilder
 from uzuki.ui.notification import NotificationManager, NotificationRenderer, NotificationLevel
+from uzuki.ui.line_numbers import LineDisplayManager
 
 class Screen:
     """メインのスクリーン管理クラス"""
@@ -49,6 +50,7 @@ class Screen:
         self.status_builder = StatusLineBuilder(self.status_line)
         self.notifications = NotificationManager()
         self.notification_renderer = NotificationRenderer(self.notifications)
+        self.line_display = LineDisplayManager()
         
         # 状態
         self.running = True
@@ -154,12 +156,22 @@ class Screen:
 
     def _draw_editor(self, h: int, w: int):
         """エディタ画面を描画"""
-        # バッファ内容を描画
-        for idx, line in enumerate(self.buffer.lines[:h-2]):  # 通知エリアとステータスラインの分を引く
-            self.stdscr.addstr(idx, 0, line)
-        
         # 通知エリアを描画
         notification_lines = self.notification_renderer.render(self.stdscr, w, h-2)
+        
+        # エディタコンテンツエリアの計算
+        content_start_y = notification_lines
+        content_height = h - 2 - notification_lines  # ステータスラインの分を引く
+        
+        # 行番号とコンテンツを描画
+        line_num_width, display_lines = self.line_display.render_editor_content(
+            self.stdscr, self.buffer.lines, self.cursor.row, self.cursor.col,
+            content_start_y, 0, content_height, w
+        )
+        
+        # カーソル位置を調整（行番号の幅を考慮）
+        cursor_x = self.cursor.col + line_num_width
+        cursor_y = content_start_y + self.cursor.row
         
         # ステータスラインを構築
         self._build_status_line()
@@ -167,7 +179,9 @@ class Screen:
         
         # ステータスラインを描画
         self.stdscr.addstr(h-1, 0, status_text[:w-1], curses.A_REVERSE)
-        self.stdscr.move(self.cursor.row, self.cursor.col)
+        
+        # カーソルを配置
+        self.stdscr.move(cursor_y, cursor_x)
 
     def _draw_file_browser(self, h: int, w: int):
         """ファイルブラウザー画面を描画"""
@@ -218,12 +232,21 @@ class Screen:
         else:
             # Normal/Insert mode
             file_info = self.file_manager.get_file_info()
+            display_info = self.line_display.get_display_info()
             
             self.status_builder.mode(self.mode.__class__.__name__.replace('Mode', '').lower())
             self.status_builder.filename(file_info['name'])
             self.status_builder.position(self.cursor.row, self.cursor.col)
             self.status_builder.encoding(file_info['encoding'])
             self.status_builder.line_count(len(self.buffer.lines))
+            
+            # 行番号表示状態
+            if display_info['line_numbers']:
+                self.status_builder.custom('line_numbers', 'LN', width=3, align='right', priority=40)
+            
+            # カレント行ハイライト状態
+            if display_info['current_line_highlight']:
+                self.status_builder.custom('highlight', 'HL', width=3, align='right', priority=35)
             
             # キーシーケンス
             sequence = self.sequence_manager.get_sequence()
@@ -348,6 +371,46 @@ class Screen:
         """ステータスラインのセグメントを削除"""
         self.status_line.remove_segment(name)
         self.needs_redraw = True
+
+    # 行表示操作
+    def toggle_line_numbers(self):
+        """行番号表示を切り替え"""
+        self.line_display.toggle_line_numbers()
+        self.needs_redraw = True
+
+    def toggle_current_line_highlight(self):
+        """カレント行ハイライトを切り替え"""
+        self.line_display.toggle_current_line_highlight()
+        self.needs_redraw = True
+
+    def toggle_ruler(self):
+        """ルーラー表示を切り替え"""
+        self.line_display.toggle_ruler()
+        self.needs_redraw = True
+
+    def highlight_line(self, line_num: int, style: Optional[int] = None):
+        """行をハイライト"""
+        self.line_display.highlighter.add_highlight(line_num, style)
+        self.needs_redraw = True
+
+    def highlight_error_line(self, line_num: int):
+        """エラー行をハイライト"""
+        self.line_display.highlighter.highlight_error_line(line_num)
+        self.needs_redraw = True
+
+    def highlight_warning_line(self, line_num: int):
+        """警告行をハイライト"""
+        self.line_display.highlighter.highlight_warning_line(line_num)
+        self.needs_redraw = True
+
+    def clear_line_highlights(self):
+        """行ハイライトをクリア"""
+        self.line_display.highlighter.clear_highlights()
+        self.needs_redraw = True
+
+    def get_line_display_info(self) -> dict:
+        """行表示情報を取得"""
+        return self.line_display.get_display_info()
 
     # コールバック
     def _on_buffer_change(self):

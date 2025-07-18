@@ -21,6 +21,11 @@ class DefaultKeyMaps:
             ':': 'enter_command_mode',
             'ctrl_e': 'open_file_browser',  # ファイルブラウザーを開く
             
+            # 表示設定
+            'ctrl_l': 'toggle_line_numbers',  # 行番号表示切り替え
+            'ctrl_h': 'toggle_current_line_highlight',  # カレント行ハイライト切り替え
+            'ctrl_r': 'toggle_ruler',  # ルーラー表示切り替え
+            
             # 編集操作（単一キー）
             'x': 'delete_char',
             'o': 'new_line_below',

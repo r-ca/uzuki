@@ -19,6 +19,11 @@ class NormalMode(BaseMode):
             'enter_command_mode': lambda: self.screen.set_mode('command'),
             'open_file_browser': self._open_file_browser,
             
+            # 表示設定
+            'toggle_line_numbers': self._toggle_line_numbers,
+            'toggle_current_line_highlight': self._toggle_current_line_highlight,
+            'toggle_ruler': self._toggle_ruler,
+            
             # 編集操作
             'delete_char': lambda: self.screen.buffer.delete(self.screen.cursor.row, self.screen.cursor.col),
             'new_line_below': self._new_line_below,
@@ -37,6 +42,21 @@ class NormalMode(BaseMode):
     def _open_file_browser(self):
         """ファイルブラウザーを開く"""
         self.screen.open_file_browser()
+    
+    def _toggle_line_numbers(self):
+        """行番号表示を切り替え"""
+        self.screen.toggle_line_numbers()
+        self.screen.notify_info("Line numbers toggled")
+    
+    def _toggle_current_line_highlight(self):
+        """カレント行ハイライトを切り替え"""
+        self.screen.toggle_current_line_highlight()
+        self.screen.notify_info("Current line highlight toggled")
+    
+    def _toggle_ruler(self):
+        """ルーラー表示を切り替え"""
+        self.screen.toggle_ruler()
+        self.screen.notify_info("Ruler toggled")
     
     def _new_line_below(self):
         """現在行の下に新しい行を挿入"""
