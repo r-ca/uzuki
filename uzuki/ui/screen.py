@@ -88,18 +88,21 @@ class Screen:
         if curses.has_colors():
             curses.start_color()
             curses.use_default_colors()
-            # 色ペアを定義
+            # 色ペアを定義（より控えめな色）
             curses.init_pair(1, curses.COLOR_RED, -1)      # エラー用（赤）
             curses.init_pair(2, curses.COLOR_GREEN, -1)    # 成功用（緑）
             curses.init_pair(3, curses.COLOR_YELLOW, -1)   # 警告用（黄）
             curses.init_pair(4, curses.COLOR_BLUE, -1)     # 情報用（青）
+            # 薄い色のペアを追加
+            curses.init_pair(5, curses.COLOR_WHITE, -1)    # 薄い白（ハイライト用）
+            curses.init_pair(6, curses.COLOR_CYAN, -1)     # 薄いシアン（カレント行用）
             
-            # 通知システムの色を設定
+            # 通知システムの色を設定（より控えめに）
             self.notifications.set_colors({
                 NotificationLevel.INFO: curses.A_NORMAL,
-                NotificationLevel.SUCCESS: curses.A_BOLD | curses.color_pair(2),
-                NotificationLevel.WARNING: curses.A_BOLD | curses.color_pair(3),
-                NotificationLevel.ERROR: curses.A_BOLD | curses.color_pair(1),
+                NotificationLevel.SUCCESS: curses.A_DIM | curses.color_pair(2),
+                NotificationLevel.WARNING: curses.A_DIM | curses.color_pair(3),
+                NotificationLevel.ERROR: curses.A_DIM | curses.color_pair(1),
             })
         
         while self.running:
@@ -403,9 +406,34 @@ class Screen:
         self.line_display.highlighter.highlight_warning_line(line_num)
         self.needs_redraw = True
 
+    def highlight_info_line(self, line_num: int):
+        """情報行をハイライト"""
+        self.line_display.highlighter.highlight_info_line(line_num)
+        self.needs_redraw = True
+
+    def highlight_success_line(self, line_num: int):
+        """成功行をハイライト"""
+        self.line_display.highlighter.highlight_success_line(line_num)
+        self.needs_redraw = True
+
     def clear_line_highlights(self):
         """行ハイライトをクリア"""
         self.line_display.highlighter.clear_highlights()
+        self.needs_redraw = True
+
+    def set_highlight_style(self, style: int):
+        """デフォルトのハイライトスタイルを設定"""
+        self.line_display.highlighter.set_highlight_style(style)
+        self.needs_redraw = True
+
+    def set_error_highlight_style(self, style: int):
+        """エラー行のハイライトスタイルを設定"""
+        self.line_display.highlighter.set_error_style(style)
+        self.needs_redraw = True
+
+    def set_warning_highlight_style(self, style: int):
+        """警告行のハイライトスタイルを設定"""
+        self.line_display.highlighter.set_warning_style(style)
         self.needs_redraw = True
 
     def get_line_display_info(self) -> dict:

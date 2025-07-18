@@ -9,7 +9,8 @@ class LineNumberDisplay:
         self.line_number_width = 4
         self.current_line_highlight = True
         self.line_number_style = curses.A_DIM
-        self.current_line_style = curses.A_REVERSE
+        # カレント行ハイライトを薄いシアン色で
+        self.current_line_style = curses.A_DIM | curses.color_pair(6) if curses.has_colors() else curses.A_DIM
         self.separator = "│"
         self.separator_style = curses.A_DIM
     
@@ -84,7 +85,7 @@ class LineNumberDisplay:
         if 0 <= cursor_row < max_height:
             y = start_y + cursor_row
             
-            # 行全体をハイライト
+            # 行全体をハイライト（より控えめなスタイル）
             line_content = " " * line_width
             stdscr.addstr(y, start_x, line_content, self.current_line_style)
 
@@ -93,9 +94,16 @@ class LineHighlighter:
     
     def __init__(self):
         self.highlighted_lines = set()  # ハイライトする行番号
-        self.highlight_style = curses.A_BOLD
-        self.error_line_style = curses.A_BOLD | curses.color_pair(1) if curses.has_colors() else curses.A_BOLD
-        self.warning_line_style = curses.A_BOLD | curses.color_pair(3) if curses.has_colors() else curses.A_BOLD
+        # より控えめなハイライトスタイル
+        self.highlight_style = curses.A_DIM
+        # エラー行は薄い赤色
+        self.error_line_style = curses.A_DIM | curses.color_pair(1) if curses.has_colors() else curses.A_DIM
+        # 警告行は薄い黄色
+        self.warning_line_style = curses.A_DIM | curses.color_pair(3) if curses.has_colors() else curses.A_DIM
+        # 情報行は薄い青色
+        self.info_line_style = curses.A_DIM | curses.color_pair(4) if curses.has_colors() else curses.A_DIM
+        # 成功行は薄い緑色
+        self.success_line_style = curses.A_DIM | curses.color_pair(2) if curses.has_colors() else curses.A_DIM
     
     def add_highlight(self, line_num: int, style: Optional[int] = None):
         """行をハイライトに追加"""
@@ -123,6 +131,26 @@ class LineHighlighter:
     def highlight_warning_line(self, line_num: int):
         """警告行をハイライト"""
         self.add_highlight(line_num, self.warning_line_style)
+    
+    def highlight_info_line(self, line_num: int):
+        """情報行をハイライト"""
+        self.add_highlight(line_num, self.info_line_style)
+    
+    def highlight_success_line(self, line_num: int):
+        """成功行をハイライト"""
+        self.add_highlight(line_num, self.success_line_style)
+    
+    def set_highlight_style(self, style: int):
+        """デフォルトのハイライトスタイルを設定"""
+        self.highlight_style = style
+    
+    def set_error_style(self, style: int):
+        """エラー行のスタイルを設定"""
+        self.error_line_style = style
+    
+    def set_warning_style(self, style: int):
+        """警告行のスタイルを設定"""
+        self.warning_line_style = style
 
 class LineDisplayManager:
     """行表示管理クラス"""
