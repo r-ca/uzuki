@@ -1,0 +1,35 @@
+2025-07-25 16:20:20,304 - uzuki - INFO - Screen initialized
+2025-07-25 16:20:20,305 - uzuki - DEBUG - Service registered: IEditorService
+2025-07-25 16:20:20,305 - uzuki - DEBUG - Service registered: IFileService
+2025-07-25 16:20:20,305 - uzuki - DEBUG - Service registered: INotificationService
+2025-07-25 16:20:20,305 - uzuki - DEBUG - Service registered: IConfigService
+2025-07-25 16:20:20,305 - uzuki - INFO - Default services registered
+2025-07-25 16:20:20,305 - uzuki - DEBUG - UIController initialized
+2025-07-25 16:20:20,305 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:20:20,306 - uzuki - INFO - Screen initialization completed
+2025-07-25 16:20:20,306 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:20:21,177 - uzuki - DEBUG - Show greeting set to: False
+2025-07-25 16:20:21,177 - uzuki - INFO - Greeting displayed and disabled
+2025-07-25 16:20:21,177 - uzuki - INFO - Main loop started
+2025-07-25 16:20:21,177 - uzuki - ERROR - ERROR in Screen._set_cursor_position: error: wmove() returned ERR
+2025-07-25 16:20:21,178 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 168, in _set_cursor_position
+    self.stdscr.move(safe_row, safe_col)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+_curses.error: wmove() returned ERR
+
+2025-07-25 16:22:13,371 - uzuki - ERROR - ERROR in Screen._set_cursor_position: error: wmove() returned ERR
+2025-07-25 16:22:13,372 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 168, in _set_cursor_position
+    self.stdscr.move(safe_row, safe_col)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+_curses.error: wmove() returned ERR
+
+2025-07-25 16:22:13,373 - uzuki - ERROR - ERROR in Screen._set_cursor_position: error: wmove() returned ERR
+2025-07-25 16:22:13,373 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 168, in _set_cursor_position
+    self.stdscr.move(safe_row, safe_col)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+_curses.error: wmove() returned ERR
+
+2025-07-25 16:22:13,375 - uzuki - INFO - Service container shutdown completed

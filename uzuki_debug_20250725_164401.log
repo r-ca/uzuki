@@ -1,0 +1,14 @@
+2025-07-25 16:44:01,123 - uzuki - INFO - Screen initialized
+2025-07-25 16:44:01,123 - uzuki - DEBUG - Service registered: IEditorService
+2025-07-25 16:44:01,123 - uzuki - DEBUG - Service registered: IFileService
+2025-07-25 16:44:01,123 - uzuki - DEBUG - Service registered: INotificationService
+2025-07-25 16:44:01,123 - uzuki - DEBUG - Service registered: IConfigService
+2025-07-25 16:44:01,123 - uzuki - INFO - Default services registered
+2025-07-25 16:44:01,124 - uzuki - DEBUG - UIController initialized
+2025-07-25 16:44:01,124 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:44:01,125 - uzuki - INFO - Screen initialization completed
+2025-07-25 16:44:01,126 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:44:01,201 - uzuki - DEBUG - Show greeting set to: False
+2025-07-25 16:44:01,201 - uzuki - INFO - Greeting displayed and disabled
+2025-07-25 16:44:01,201 - uzuki - INFO - Main loop started
+2025-07-25 16:44:08,957 - uzuki - INFO - Service container shutdown completed

@@ -1,0 +1,344 @@
+2025-07-25 16:25:46,888 - uzuki - INFO - Screen initialized
+2025-07-25 16:25:46,889 - uzuki - DEBUG - Service registered: IEditorService
+2025-07-25 16:25:46,889 - uzuki - DEBUG - Service registered: IFileService
+2025-07-25 16:25:46,889 - uzuki - DEBUG - Service registered: INotificationService
+2025-07-25 16:25:46,889 - uzuki - DEBUG - Service registered: IConfigService
+2025-07-25 16:25:46,889 - uzuki - INFO - Default services registered
+2025-07-25 16:25:46,889 - uzuki - DEBUG - UIController initialized
+2025-07-25 16:25:46,889 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:25:46,890 - uzuki - INFO - Screen initialization completed
+2025-07-25 16:25:46,892 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:25:47,437 - uzuki - DEBUG - Show greeting set to: False
+2025-07-25 16:25:47,437 - uzuki - INFO - Greeting displayed and disabled
+2025-07-25 16:25:47,437 - uzuki - INFO - Main loop started
+2025-07-25 16:25:51,530 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:51,532 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:51,777 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:51,778 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:51,817 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:51,818 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:51,857 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:51,858 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:51,897 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:51,898 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:51,937 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:51,938 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:51,977 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:51,978 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:52,017 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:52,019 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:52,057 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:52,059 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:52,097 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:52,099 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:52,137 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:52,139 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:52,177 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:52,179 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:52,217 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:52,218 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:52,257 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:52,258 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:25:52,297 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:25:52,298 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:26:48,105 - uzuki - INFO - Service container shutdown completed

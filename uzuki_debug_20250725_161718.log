@@ -1,0 +1,36 @@
+2025-07-25 16:17:18,736 - uzuki - INFO - Screen initialized
+2025-07-25 16:17:18,736 - uzuki - DEBUG - Service registered: IEditorService
+2025-07-25 16:17:18,736 - uzuki - DEBUG - Service registered: IFileService
+2025-07-25 16:17:18,736 - uzuki - DEBUG - Service registered: INotificationService
+2025-07-25 16:17:18,737 - uzuki - DEBUG - Service registered: IConfigService
+2025-07-25 16:17:18,737 - uzuki - INFO - Default services registered
+2025-07-25 16:17:18,737 - uzuki - DEBUG - UIController initialized
+2025-07-25 16:17:18,737 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:17:18,738 - uzuki - INFO - Screen initialization completed
+2025-07-25 16:17:18,739 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:17:24,751 - uzuki - DEBUG - Show greeting set to: False
+2025-07-25 16:17:24,751 - uzuki - INFO - Greeting displayed and disabled
+2025-07-25 16:17:24,751 - uzuki - INFO - Main loop started
+2025-07-25 16:17:24,751 - uzuki - ERROR - ERROR in UIController._draw_editor_content: AttributeError: 'UIController' object has no attribute 'ui'
+2025-07-25 16:17:24,752 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/ui_controller.py", line 96, in _draw_editor_content
+    screen_y, screen_x = self.ui.editor_display.get_cursor_screen_pos(
+                         ^^^^^^^
+AttributeError: 'UIController' object has no attribute 'ui'
+
+2025-07-25 16:17:24,753 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'UIController' object has no attribute 'line_display'
+2025-07-25 16:17:24,754 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 158, in _set_cursor_position
+    viewport = self.ui.line_display.viewport.get_viewport_info(0, 0, height - 1, width)
+               ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UIController' object has no attribute 'line_display'
+
+2025-07-25 16:17:24,755 - uzuki - ERROR - ERROR in UIController._draw_editor_content: AttributeError: 'UIController' object has no attribute 'ui'
+2025-07-25 16:17:24,755 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/ui_controller.py", line 96, in _draw_editor_content
+    screen_y, screen_x = self.ui.editor_display.get_cursor_screen_pos(
+                         ^^^^^^^
+AttributeError: 'UIController' object has no attribute 'ui'
+
+2025-07-25 16:17:24,756 - uzuki - ERROR - ERROR in UIController._draw_editor_content: AttributeError: 'UIController' object has no attribute 'ui'
+2025-07-25 16:17:24,756 - uzuki - INFO - Service container shutdown completed

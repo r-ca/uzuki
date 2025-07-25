@@ -1,0 +1,245 @@
+2025-07-25 16:37:16,141 - uzuki - INFO - Screen initialized
+2025-07-25 16:37:16,141 - uzuki - DEBUG - Service registered: IEditorService
+2025-07-25 16:37:16,142 - uzuki - DEBUG - Service registered: IFileService
+2025-07-25 16:37:16,142 - uzuki - DEBUG - Service registered: INotificationService
+2025-07-25 16:37:16,142 - uzuki - DEBUG - Service registered: IConfigService
+2025-07-25 16:37:16,142 - uzuki - INFO - Default services registered
+2025-07-25 16:37:16,142 - uzuki - DEBUG - UIController initialized
+2025-07-25 16:37:16,142 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:37:16,143 - uzuki - INFO - Screen initialization completed
+2025-07-25 16:37:16,145 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:37:16,715 - uzuki - DEBUG - Show greeting set to: False
+2025-07-25 16:37:16,716 - uzuki - INFO - Greeting displayed and disabled
+2025-07-25 16:37:16,716 - uzuki - INFO - Main loop started
+2025-07-25 16:37:17,399 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:17,400 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:17,662 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:17,662 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:17,914 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:17,914 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:17,930 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:17,931 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:17,954 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:17,955 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:17,970 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:17,970 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:17,989 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:17,991 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,010 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,010 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,030 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,031 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,049 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,050 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,070 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,071 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,091 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,092 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,110 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,111 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,279 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,280 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,442 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,443 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,690 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,690 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,709 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,710 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,729 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,730 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,749 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,750 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,770 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,770 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,790 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,790 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,809 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,810 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,831 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,832 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,850 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,850 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,870 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,871 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,889 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,890 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,909 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,910 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,929 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,930 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:37:18,949 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:37:18,950 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:38:26,216 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:38:26,217 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:38:26,543 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:38:26,544 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:38:27,066 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:38:27,067 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:38:27,197 - uzuki - ERROR - ERROR in Screen._set_cursor_position: AttributeError: 'Screen' object has no attribute 'screen'
+2025-07-25 16:38:27,197 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 152, in _set_cursor_position
+    file_info = self.screen.file.get_file_info()
+                ^^^^^^^^^^^
+AttributeError: 'Screen' object has no attribute 'screen'
+
+2025-07-25 16:38:27,297 - uzuki - INFO - Service container shutdown completed

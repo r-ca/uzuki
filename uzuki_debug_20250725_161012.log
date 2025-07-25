@@ -1,0 +1,300 @@
+2025-07-25 16:10:12,965 - uzuki - INFO - Screen initialized
+2025-07-25 16:10:12,965 - uzuki - DEBUG - Service registered: IEditorService
+2025-07-25 16:10:12,965 - uzuki - DEBUG - Service registered: IFileService
+2025-07-25 16:10:12,965 - uzuki - DEBUG - Service registered: INotificationService
+2025-07-25 16:10:12,965 - uzuki - DEBUG - Service registered: IConfigService
+2025-07-25 16:10:12,965 - uzuki - INFO - Default services registered
+2025-07-25 16:10:12,965 - uzuki - DEBUG - UIController initialized
+2025-07-25 16:10:12,965 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:10:12,966 - uzuki - INFO - Screen initialization completed
+2025-07-25 16:10:12,967 - uzuki - DEBUG - Greeting content updated
+2025-07-25 16:10:13,489 - uzuki - DEBUG - Show greeting set to: False
+2025-07-25 16:10:13,490 - uzuki - INFO - Greeting displayed and disabled
+2025-07-25 16:10:13,490 - uzuki - INFO - Main loop started
+2025-07-25 16:10:15,267 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,269 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,514 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,515 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,554 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,557 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,594 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,597 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,634 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,636 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,674 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,676 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,715 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,717 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,754 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,756 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,795 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,797 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,834 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,836 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,874 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,876 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,915 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,916 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:15,954 - uzuki - ERROR - ERROR in Screen._handle_key: AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+2025-07-25 16:10:15,957 - uzuki - ERROR - Traceback: Traceback (most recent call last):
+  File "/home/rca/proj/uzuki/uzuki/ui/screen.py", line 107, in _handle_key
+    self.editor.handle_key(raw_code)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 78, in handle_key
+    self.mode.handle_default(key_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/modes/insert_mode.py", line 28, in handle_default
+    self.screen.editor.cursor.move(0, 1, buf)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 25, in move
+    self._notify_move()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/core/cursor.py", line 15, in _notify_move
+    self.on_move()
+    ~~~~~~~~~~~~^^
+  File "/home/rca/proj/uzuki/uzuki/controllers/editor_controller.py", line 119, in _on_cursor_move
+    self.screen.ui.line_display.scroll_to_cursor(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LineDisplayManager' object has no attribute 'scroll_to_cursor'
+
+2025-07-25 16:10:16,785 - uzuki - INFO - Service container shutdown completed

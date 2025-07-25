@@ -1,0 +1,6 @@
+2025-07-25 16:12:43,292 - uzuki - INFO - Screen initialized
+2025-07-25 16:12:43,292 - uzuki - DEBUG - Service registered: IEditorService
+2025-07-25 16:12:43,292 - uzuki - DEBUG - Service registered: IFileService
+2025-07-25 16:12:43,292 - uzuki - DEBUG - Service registered: INotificationService
+2025-07-25 16:12:43,292 - uzuki - DEBUG - Service registered: IConfigService
+2025-07-25 16:12:43,292 - uzuki - INFO - Default services registered
