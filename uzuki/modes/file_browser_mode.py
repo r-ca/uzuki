@@ -8,7 +8,7 @@ class FileBrowserMode(BaseMode):
     
     def __init__(self, screen):
         super().__init__(screen, 'file_browser')
-        self.browser = FileBrowser(screen.file_selector)
+        self.browser = FileBrowser(screen.file.file_selector)
         self.filter_mode = False
         self.filter_text = ""
         self.original_mode = None
@@ -24,8 +24,6 @@ class FileBrowserMode(BaseMode):
             
             # ファイル操作
             'open_file': self._open_selected_file,
-            'create_file': self._create_file,
-            'delete_file': self._delete_file,
             
             # フィルタリング
             'toggle_filter': self._toggle_filter_mode,
@@ -60,8 +58,8 @@ class FileBrowserMode(BaseMode):
     
     def _go_parent_directory(self):
         """親ディレクトリに移動"""
-        parent_dir = self.screen.file_selector.get_parent_directory()
-        if self.screen.file_selector.change_directory(parent_dir):
+        parent_dir = self.screen.file.file_selector.get_parent_directory()
+        if self.screen.file.file_selector.change_directory(parent_dir):
             self.browser.current_index = 0
             self.browser.scroll_offset = 0
             self.screen.notify_info(f"Changed to: {parent_dir}")
@@ -71,8 +69,8 @@ class FileBrowserMode(BaseMode):
     def _enter_directory(self):
         """選択されたディレクトリに入る"""
         selected_file = self.browser.get_selected_file()
-        if selected_file and self.screen.file_selector.is_valid_directory(selected_file):
-            if self.screen.file_selector.change_directory(selected_file):
+        if selected_file and self.screen.file.file_selector.is_valid_directory(selected_file):
+            if self.screen.file.file_selector.change_directory(selected_file):
                 self.browser.current_index = 0
                 self.browser.scroll_offset = 0
                 self.screen.notify_info(f"Entered: {selected_file}")
@@ -82,7 +80,7 @@ class FileBrowserMode(BaseMode):
     def _open_selected_file(self):
         """選択されたファイルを開く"""
         selected_file = self.browser.get_selected_file()
-        if selected_file and self.screen.file_selector.is_valid_file(selected_file):
+        if selected_file and self.screen.file.file_selector.is_valid_file(selected_file):
             try:
                 self.screen.load_file(selected_file)
                 self._exit_browser()
@@ -90,16 +88,6 @@ class FileBrowserMode(BaseMode):
                 self.screen.notify_error(f"Failed to open file: {e}")
         else:
             self.screen.notify_warning("Please select a valid file")
-    
-    def _create_file(self):
-        """新しいファイルを作成"""
-        # TODO: ファイル作成ダイアログの実装
-        self.screen.notify_info("File creation not implemented yet")
-    
-    def _delete_file(self):
-        """選択されたファイルを削除"""
-        # TODO: ファイル削除確認ダイアログの実装
-        self.screen.notify_info("File deletion not implemented yet")
     
     def _toggle_filter_mode(self):
         """フィルタモードを切り替え"""
@@ -117,7 +105,7 @@ class FileBrowserMode(BaseMode):
     
     def get_status_info(self) -> dict:
         """ステータス情報を取得"""
-        current_dir = self.screen.file_selector.get_current_directory()
+        current_dir = self.screen.file.file_selector.get_current_directory()
         selected_file = self.browser.get_selected_file()
         
         return {
@@ -126,5 +114,5 @@ class FileBrowserMode(BaseMode):
             'filter_mode': self.filter_mode,
             'filter_text': self.filter_text,
             'show_hidden': self.browser.show_hidden,
-            'total_files': len(self.screen.file_selector.get_files_in_directory()),
+            'total_files': len(self.screen.file.file_selector.get_files_in_directory()),
         } 

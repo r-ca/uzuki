@@ -173,7 +173,7 @@ class KeyMapManager:
         # 最長一致で検索（キーの長さで降順ソート）
         for keymap in sorted(self.keymaps, key=lambda x: len(x['key']), reverse=True):
             if (keymap['mode'] == mode and 
-                key_sequence.endswith(keymap['key'])):
+                key_sequence == keymap['key']):  # 完全一致に変更
                 action = keymap['action']
                 if callable(action):
                     return action
@@ -183,7 +183,7 @@ class KeyMapManager:
         # グローバルキーマップを検索
         for keymap in sorted(self.keymaps, key=lambda x: len(x['key']), reverse=True):
             if (keymap['mode'] == 'global' and 
-                key_sequence.endswith(keymap['key'])):
+                key_sequence == keymap['key']):  # 完全一致に変更
                 action = keymap['action']
                 if callable(action):
                     return action
@@ -195,10 +195,10 @@ class KeyMapManager:
     def _get_action_handler(self, mode: str, action_name: str) -> Callable:
         """アクションハンドラーを取得"""
         mode_map = {
-            'normal': self.screen.normal_mode,
-            'insert': self.screen.insert_mode,
-            'command': self.screen.command_mode,
-            'file_browser': self.screen.file_browser_mode,
+            'normal': self.screen.editor.normal_mode,
+            'insert': self.screen.editor.insert_mode,
+            'command': self.screen.editor.command_mode,
+            'file_browser': self.screen.editor.file_browser_mode,
             'global': None,  # グローバルは特別処理
         }
         
@@ -209,6 +209,13 @@ class KeyMapManager:
             return mode_obj.get_action_handlers().get(action_name)
         
         return None
+    
+    def debug_keymaps(self, mode: str = None):
+        """デバッグ用：登録されているキーマップを表示"""
+        print(f"DEBUG: Registered keymaps:")
+        for keymap in self.keymaps:
+            if mode is None or keymap['mode'] == mode:
+                print(f"  {keymap['mode']}: '{keymap['key']}' -> {keymap['action']}")
     
     def _get_global_handlers(self) -> Dict[str, Callable]:
         """グローバルアクションハンドラーを取得"""

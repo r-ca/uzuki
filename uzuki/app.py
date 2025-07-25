@@ -61,7 +61,7 @@ Examples:
         
         # エンコーディングを設定
         if args.encoding:
-            screen.file_manager.encoding = args.encoding
+            screen.file.file_manager.encoding = args.encoding
         
         # cursesでエディタを実行
         curses.wrapper(screen.run)

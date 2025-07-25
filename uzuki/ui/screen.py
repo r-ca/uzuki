@@ -1,502 +1,122 @@
+"""
+Screen - Main screen management class
+
+A clean, modular implementation using services and DI container to manage
+different aspects of the editor functionality.
+"""
+
 import curses
 import time
 import sys
 import os
-from typing import Optional, List, Tuple
-from uzuki.core.buffer import Buffer
-from uzuki.core.cursor import Cursor
-from uzuki.core.history import History
-from uzuki.core.file_manager import FileManager
-from uzuki.core.file_selector import FileSelector
-from uzuki.input.handler import InputHandler
-from uzuki.input.sequence_manager import KeySequenceManager
-from uzuki.modes.normal_mode import NormalMode
-from uzuki.modes.insert_mode import InsertMode
-from uzuki.commands.command_mode import CommandMode
-from uzuki.modes.file_browser_mode import FileBrowserMode
-from uzuki.keymaps.manager import KeyMapManager
-from uzuki.ui.status_line import StatusLineManager, StatusLineBuilder
-from uzuki.ui.notification import NotificationManager, NotificationRenderer, NotificationLevel
-from uzuki.ui.line_numbers import LineDisplayManager
-from uzuki.utils.screen_utils import GreetingRenderer, PresetAsciiArt
-from uzuki.config import ConfigManager
+from typing import Optional
+from uzuki.container import ServiceContainer
+from uzuki.controllers import (
+    EditorController,
+    FileController,
+    ConfigController,
+    NotificationController
+)
+from .ui_controller import UIController
+from uzuki.ui.notification import NotificationLevel
+from uzuki.ui.color_manager import color_manager
+from uzuki.utils.debug import init_debug_logger, get_debug_logger
 
 class Screen:
     """メインのスクリーン管理クラス"""
+    
     def __init__(self, initial_file: Optional[str] = None, show_greeting: bool = True, config_file: Optional[str] = None):
-        # コアコンポーネント
-        self.buffer = Buffer()
-        self.cursor = Cursor()
-        self.history = History()
-        self.file_manager = FileManager()
-        self.file_selector = FileSelector()
+        # デバッグロガーを初期化
+        self.debug_logger = init_debug_logger()
+        self.debug_logger.info("Screen initialized")
         
-        # 変更通知コールバックを設定
-        self.buffer.set_change_callback(self._on_buffer_change)
-        self.cursor.set_move_callback(self._on_cursor_move)
+        # サービスコンテナを初期化
+        self.container = ServiceContainer()
         
-        # モード
-        self.normal_mode = NormalMode(self)
-        self.insert_mode = InsertMode(self)
-        self.command_mode = CommandMode(self)
-        self.file_browser_mode = FileBrowserMode(self)
-        self.mode = self.normal_mode
-        
-        # 入力処理
-        self.input_handler = InputHandler(self)
-        self.keymap = KeyMapManager(self)
-        self.sequence_manager = KeySequenceManager()
-        
-        # 設定システム（キーマップマネージャーを渡す）
-        self.config_manager = ConfigManager(config_file, keymap_manager=self.keymap)
-        
-        # UI管理
-        self.status_line = StatusLineManager()
-        self.status_builder = StatusLineBuilder(self.status_line)
-        self.notifications = NotificationManager()
-        self.notification_renderer = NotificationRenderer(self.notifications)
-        self.line_display = LineDisplayManager()
-        self.greeting = GreetingRenderer()
+        # コントローラーの初期化（依存関係の順序で）
+        self.editor = EditorController(self)
+        self.notifications = NotificationController(self)
+        self.file = FileController(self)
+        self.ui = UIController(self)
+        self.config = ConfigController(self, config_file)
         
         # 状態
         self.running = True
-        self.needs_redraw = True
         self.show_greeting = show_greeting
         
         # 設定を適用
-        self._apply_config()
+        self.config.apply_config()
         
         # 初期ファイルの読み込み
         if initial_file:
-            self._load_initial_file(initial_file)
-
-    def _apply_config(self):
-        """設定を適用"""
-        # エディタ設定
-        editor_config = self.config_manager.get_editor_config()
-        self.file_manager.encoding = editor_config.get('default_encoding', 'utf-8')
+            self.file.load_initial_file(initial_file)
         
-        # 表示設定
-        display_config = self.config_manager.get_display_config()
-        if not display_config.get('line_numbers', True):
-            self.line_display.toggle_line_numbers()
-        if not display_config.get('current_line_highlight', True):
-            self.line_display.toggle_current_line_highlight()
-        
-        # 通知設定
-        notification_config = self.config_manager.get_notification_config()
-        self.notifications.max_notifications = notification_config.get('max_notifications', 5)
-        
-        # Greeting設定
-        greeting_config = self.config_manager.get_greeting_config()
-        if greeting_config.get('content'):
-            self.greeting.set_content(greeting_config['content'])
-        if greeting_config.get('bottom_text'):
-            self.greeting.set_bottom_text(greeting_config['bottom_text'])
-        
-        # キーマップ設定
-        keymap_config = self.config_manager.get_keymap_config()
-        self.keymap.load_from_config(keymap_config)
-
-    def _load_initial_file(self, filepath: str):
-        """初期ファイルを読み込み"""
-        try:
-            # パスを解決
-            resolved_path = self.file_selector.resolve_path(filepath)
-            
-            if os.path.isfile(resolved_path):
-                self.load_file(resolved_path)
-            elif os.path.isdir(resolved_path):
-                # ディレクトリの場合はファイルブラウザーを開く
-                self.file_selector.change_directory(resolved_path)
-                self.file_browser_mode.enter_browser('normal')
-            else:
-                # ファイルが存在しない場合は新規作成
-                self.file_manager.filename = resolved_path
-                self.notify_info(f"New file: {resolved_path}")
-        except Exception as e:
-            self.notify_error(f"Failed to load initial file: {e}")
+        self.debug_logger.info("Screen initialization completed")
 
     def run(self, stdscr):
-        """メインループ"""
-        self.stdscr = stdscr
-        curses.curs_set(1)
-        
-        # 色の初期化
-        if curses.has_colors():
-            curses.start_color()
-            curses.use_default_colors()
-            # 色ペアを定義（より控えめな色）
-            curses.init_pair(1, curses.COLOR_RED, -1)      # エラー用（赤）
-            curses.init_pair(2, curses.COLOR_GREEN, -1)    # 成功用（緑）
-            curses.init_pair(3, curses.COLOR_YELLOW, -1)   # 警告用（黄）
-            curses.init_pair(4, curses.COLOR_BLUE, -1)     # 情報用（青）
-            # 薄い色のペアを追加
-            curses.init_pair(5, curses.COLOR_WHITE, -1)    # 薄い白（ハイライト用）
-            curses.init_pair(6, curses.COLOR_CYAN, -1)     # 薄いシアン（カレント行用）
+        """メインループを実行"""
+        try:
+            self.stdscr = stdscr
             
-            # 通知システムの色を設定（より控えめに）
+            # curses初期設定
+            curses.noecho()  # キー入力を表示しない
+            curses.cbreak()  # 入力バッファを使用しない
+            
+            # カラーマネージャーを初期化
+            color_manager.initialize()
+            
+            # システムカーソルを有効化
+            curses.curs_set(1)
+            
+            # 通知システムの色を設定
             self.notifications.set_colors({
                 NotificationLevel.INFO: curses.A_NORMAL,
-                NotificationLevel.SUCCESS: curses.A_DIM | curses.color_pair(2),
-                NotificationLevel.WARNING: curses.A_DIM | curses.color_pair(3),
-                NotificationLevel.ERROR: curses.A_DIM | curses.color_pair(1),
+                NotificationLevel.SUCCESS: color_manager.get_success_style(),
+                NotificationLevel.WARNING: color_manager.get_warning_style(),
+                NotificationLevel.ERROR: color_manager.get_error_style(),
             })
-        
-        # LineHighlighterの色を初期化
-        self.line_display.highlighter._init_colors()
-        
-        # Greeting表示
-        if self.show_greeting:
-            self._show_greeting()
-        
-        while self.running:
-            # 画面を描画（毎回描画するように変更）
-            self.draw()
             
-            # キー入力を待つ
-            raw = stdscr.getch()
-            self._handle_key(raw)
+            # Greeting表示
+            if self.show_greeting:
+                self._show_greeting()
+            
+            self.debug_logger.info("Main loop started")
+            
+            while self.running:
+                # 画面を描画（常に描画）
+                self.ui.draw(self.stdscr)
+                
+                # カーソル位置を設定
+                self._set_cursor_position()
+                
+                # キー入力を待つ
+                raw = self.stdscr.getch()
+                self._handle_key(raw)
+                
+        except Exception as e:
+            self.debug_logger.log_error(e, "Screen.run")
+            raise
+        finally:
+            # クリーンアップ
+            color_manager.cleanup()
+            self.container.shutdown()
 
     def _handle_key(self, raw_code: int):
-        """キー入力を処理（シーケンス対応）"""
-        key_info = self.input_handler.create_key_info(raw_code)
-        
-        # キーシーケンスを管理
-        sequence = self.sequence_manager.add_key(key_info.key_name)
-        
-        # アクションを検索
-        action = self.keymap.get_action(self.mode.mode_name, sequence)
-        
-        if action:
-            # アクションが見つかったら即座に実行
-            action()
-            self.sequence_manager.clear()
-            # アクション実行後に画面を再描画
-            self.draw()
-        elif self.keymap.has_potential_mapping(self.mode.mode_name, sequence):
-            # 潜在的なマッピングがある場合は待つが、画面更新フラグが設定されていれば描画
-            if self.needs_redraw:
-                self.draw()
-        else:
-            # マッピングがない場合は即座にデフォルト処理
-            if len(sequence) == 1:
-                self.mode.handle_default(key_info)
-                # デフォルト処理後に画面を再描画
-                self.draw()
-            self.sequence_manager.clear()
-
-    def draw(self):
-        """画面を描画"""
-        self.stdscr.erase()
-        h, w = self.stdscr.getmaxyx()
-        
-        # モードに応じて描画内容を変更
-        if isinstance(self.mode, self.file_browser_mode.__class__):
-            self._draw_file_browser(h, w)
-        else:
-            self._draw_editor(h, w)
-        
-        self.stdscr.refresh()
-        self.needs_redraw = False
-
-    def _draw_editor(self, h: int, w: int):
-        """エディタ画面を描画"""
-        # 通知エリアを描画
-        notification_lines = self.notification_renderer.render(self.stdscr, w, h-2)
-        
-        # エディタコンテンツエリアの計算
-        content_start_y = notification_lines
-        content_height = h - 2 - notification_lines  # ステータスラインの分を引く
-        
-        # 行番号とコンテンツを描画
-        line_num_width, display_lines = self.line_display.render_editor_content(
-            self.stdscr, self.buffer.lines, self.cursor.row, self.cursor.col,
-            content_start_y, 0, content_height, w
-        )
-        
-        # カーソル位置を調整（行番号の幅を考慮）
-        cursor_x = self.cursor.col + line_num_width
-        cursor_y = content_start_y + self.cursor.row
-        
-        # ステータスラインを構築
-        self._build_status_line()
-        status_text = self.status_line.render(w)
-        
-        # ステータスラインを描画
-        self.stdscr.addstr(h-1, 0, status_text[:w-1], curses.A_REVERSE)
-        
-        # カーソルを配置
-        self.stdscr.move(cursor_y, cursor_x)
-
-    def _draw_file_browser(self, h: int, w: int):
-        """ファイルブラウザー画面を描画"""
-        # ヘッダー
-        header = f"File Browser - {self.file_selector.get_current_directory()}"
-        self.stdscr.addstr(0, 0, header[:w-1], curses.A_BOLD)
-        
-        # ファイル一覧
-        display_files = self.file_browser_mode.browser.get_display_files(h-4)
-        
-        for i, (name, path, is_dir, is_selected) in enumerate(display_files):
-            if i + 2 >= h - 2:  # ステータスラインの分を引く
-                break
-            
-            # アイコンと名前
-            icon = "📁 " if is_dir else "📄 "
-            display_name = icon + name
-            
-            # 選択状態のスタイル
-            style = curses.A_REVERSE if is_selected else curses.A_NORMAL
-            
-            # ディレクトリの場合は太字
-            if is_dir:
-                style |= curses.A_BOLD
-            
-            self.stdscr.addstr(i + 2, 0, display_name[:w-1], style)
-        
-        # フィルタ情報
-        if self.file_browser_mode.filter_mode:
-            filter_info = f"Filter: {self.file_browser_mode.filter_text}"
-            self.stdscr.addstr(h-3, 0, filter_info[:w-1], curses.A_BOLD)
-        
-        # ステータスライン
-        status_info = self.file_browser_mode.get_status_info()
-        status_text = f"Files: {status_info['total_files']} | Hidden: {'ON' if status_info['show_hidden'] else 'OFF'}"
-        if status_info['selected_file']:
-            status_text += f" | Selected: {os.path.basename(status_info['selected_file'])}"
-        
-        self.stdscr.addstr(h-1, 0, status_text[:w-1], curses.A_REVERSE)
-
-    def _build_status_line(self):
-        """ステータスラインを構築"""
-        self.status_line.clear()
-        
-        if isinstance(self.mode, self.command_mode.__class__):
-            # Command mode
-            self.status_builder.command(self.mode.cmd_buf)
-        else:
-            # Normal/Insert mode
-            file_info = self.file_manager.get_file_info()
-            display_info = self.line_display.get_display_info()
-            
-            self.status_builder.mode(self.mode.__class__.__name__.replace('Mode', '').lower())
-            self.status_builder.filename(file_info['name'])
-            self.status_builder.position(self.cursor.row, self.cursor.col)
-            self.status_builder.encoding(file_info['encoding'])
-            self.status_builder.line_count(len(self.buffer.lines))
-            
-            # 行番号表示状態
-            if display_info['line_numbers']:
-                self.status_builder.custom('line_numbers', 'LN', width=3, align='right', priority=40)
-            
-            # カレント行ハイライト状態
-            if display_info['current_line_highlight']:
-                self.status_builder.custom('highlight', 'HL', width=3, align='right', priority=35)
-            
-            # キーシーケンス
-            sequence = self.sequence_manager.get_sequence()
-            if sequence:
-                self.status_builder.sequence(sequence)
-            
-            # 変更フラグ
-            if self.file_manager.is_modified:
-                self.status_builder.custom('modified', '[+]', width=4, align='right', priority=85)
-
-    def force_redraw(self):
-        """強制的に画面を再描画"""
-        self.needs_redraw = True
-        self.draw()
-
-    def set_mode(self, mode_name: str):
-        """モードを切り替える"""
-        if mode_name == 'normal':
-            self.mode = self.normal_mode
-        elif mode_name == 'insert':
-            self.mode = self.insert_mode
-        elif mode_name == 'command':
-            self.mode = self.command_mode
-        elif mode_name == 'file_browser':
-            self.mode = self.file_browser_mode
-        
-        # モード切り替え時にシーケンスをクリア
-        self.sequence_manager.clear()
-        # モード切り替え後に画面を再描画
-        self.draw()
-
-    def quit(self):
-        """エディタを終了"""
-        self.running = False
-
-    # ファイル操作
-    def load_file(self, filepath: str):
-        """ファイルを読み込み"""
+        """キー入力を処理"""
         try:
-            lines = self.file_manager.load_file(filepath)
-            self.buffer.lines = lines
-            self.cursor.row = 0
-            self.cursor.col = 0
-            self.notifications.add(f"Loaded: {filepath}", NotificationLevel.SUCCESS)
-            self.needs_redraw = True
+            self.editor.handle_key(raw_code)
+            
+            # エディタの状態に応じて画面を更新
+            if self.editor.needs_redraw:
+                self.ui.draw(self.stdscr)
+                self.editor.needs_redraw = False
         except Exception as e:
-            self.notifications.add(f"Failed to load file: {e}", NotificationLevel.ERROR, duration=5.0)
-
-    def save_file(self, filepath: Optional[str] = None):
-        """ファイルを保存"""
-        try:
-            save_path = filepath or self.file_manager.filename
-            if not save_path:
-                self.notifications.add("No file to save", NotificationLevel.WARNING)
-                return
-            
-            self.file_manager.save_file(save_path, self.buffer.lines)
-            self.notifications.add(f"Saved: {save_path}", NotificationLevel.SUCCESS)
-            self.needs_redraw = True
-        except Exception as e:
-            self.notifications.add(f"Failed to save file: {e}", NotificationLevel.ERROR, duration=5.0)
-
-    def set_encoding(self, encoding: str):
-        """文字エンコーディングを設定"""
-        try:
-            self.file_manager.set_encoding(encoding)
-            self.notifications.add(f"Encoding set to: {encoding}", NotificationLevel.INFO)
-            self.needs_redraw = True
-        except ValueError as e:
-            self.notifications.add(str(e), NotificationLevel.ERROR)
-
-    # ファイルブラウザー操作
-    def open_file_browser(self, directory: Optional[str] = None):
-        """ファイルブラウザーを開く"""
-        if directory:
-            self.file_selector.change_directory(directory)
-        
-        current_mode = self.mode.mode_name
-        self.file_browser_mode.enter_browser(current_mode)
-
-    # 通知システム（ピュアなAPI）
-    def notify(self, message: str, level: NotificationLevel = NotificationLevel.INFO, 
-               duration: float = 3.0, metadata: Optional[dict] = None):
-        """通知を表示"""
-        self.notifications.add(message, level, duration, metadata)
-        self.needs_redraw = True
-
-    def notify_info(self, message: str, duration: float = 3.0):
-        """情報通知"""
-        self.notify(message, NotificationLevel.INFO, duration)
-
-    def notify_success(self, message: str, duration: float = 3.0):
-        """成功通知"""
-        self.notify(message, NotificationLevel.SUCCESS, duration)
-
-    def notify_warning(self, message: str, duration: float = 4.0):
-        """警告通知"""
-        self.notify(message, NotificationLevel.WARNING, duration)
-
-    def notify_error(self, message: str, duration: float = 5.0):
-        """エラー通知"""
-        self.notify(message, NotificationLevel.ERROR, duration)
-
-    def clear_notifications(self):
-        """すべての通知をクリア"""
-        self.notifications.clear()
-        self.needs_redraw = True
-
-    # ステータスライン操作
-    def add_status_segment(self, name: str, content: str, width: Optional[int] = None, 
-                          align: str = 'left', priority: int = 0):
-        """ステータスラインにセグメントを追加"""
-        self.status_line.add_segment(name, content, width, align, priority)
-        self.needs_redraw = True
-
-    def update_status_segment(self, name: str, content: str):
-        """ステータスラインのセグメントを更新"""
-        self.status_line.update_segment(name, content)
-        self.needs_redraw = True
-
-    def remove_status_segment(self, name: str):
-        """ステータスラインのセグメントを削除"""
-        self.status_line.remove_segment(name)
-        self.needs_redraw = True
-
-    # 行表示操作
-    def toggle_line_numbers(self):
-        """行番号表示を切り替え"""
-        self.line_display.toggle_line_numbers()
-        self.needs_redraw = True
-
-    def toggle_current_line_highlight(self):
-        """カレント行ハイライトを切り替え"""
-        self.line_display.toggle_current_line_highlight()
-        self.needs_redraw = True
-
-    def toggle_ruler(self):
-        """ルーラー表示を切り替え"""
-        self.line_display.toggle_ruler()
-        self.needs_redraw = True
-
-    def highlight_line(self, line_num: int, style: Optional[int] = None):
-        """行をハイライト"""
-        self.line_display.highlighter.add_highlight(line_num, style)
-        self.needs_redraw = True
-
-    def highlight_error_line(self, line_num: int):
-        """エラー行をハイライト"""
-        self.line_display.highlighter.highlight_error_line(line_num)
-        self.needs_redraw = True
-
-    def highlight_warning_line(self, line_num: int):
-        """警告行をハイライト"""
-        self.line_display.highlighter.highlight_warning_line(line_num)
-        self.needs_redraw = True
-
-    def highlight_info_line(self, line_num: int):
-        """情報行をハイライト"""
-        self.line_display.highlighter.highlight_info_line(line_num)
-        self.needs_redraw = True
-
-    def highlight_success_line(self, line_num: int):
-        """成功行をハイライト"""
-        self.line_display.highlighter.highlight_success_line(line_num)
-        self.needs_redraw = True
-
-    def clear_line_highlights(self):
-        """行ハイライトをクリア"""
-        self.line_display.highlighter.clear_highlights()
-        self.needs_redraw = True
-
-    def set_highlight_style(self, style: int):
-        """デフォルトのハイライトスタイルを設定"""
-        self.line_display.highlighter.set_highlight_style(style)
-        self.needs_redraw = True
-
-    def set_error_highlight_style(self, style: int):
-        """エラー行のハイライトスタイルを設定"""
-        self.line_display.highlighter.set_error_style(style)
-        self.needs_redraw = True
-
-    def set_warning_highlight_style(self, style: int):
-        """警告行のハイライトスタイルを設定"""
-        self.line_display.highlighter.set_warning_style(style)
-        self.needs_redraw = True
-
-    def get_line_display_info(self) -> dict:
-        """行表示情報を取得"""
-        return self.line_display.get_display_info()
-
-    # コールバック
-    def _on_buffer_change(self):
-        """バッファ変更時の処理"""
-        self.file_manager.mark_modified()
-        self.needs_redraw = True
-
-    def _on_cursor_move(self):
-        """カーソル移動時の処理"""
-        self.needs_redraw = True
+            self.debug_logger.log_error(e, "Screen._handle_key")
 
     def _show_greeting(self):
         """Greetingを表示"""
         # デフォルトのコンテンツを設定
-        self.greeting.set_content([
+        self.ui.set_greeting_content([
             "Welcome to Uzuki",
             "A Vim-like text editor in Python",
             "",
@@ -504,59 +124,181 @@ class Screen:
         ])
         
         # Greetingを表示
-        if self.greeting.render_greeting(self.stdscr):
-            # キー入力を待つ
-            self.stdscr.getch()
-
-    # Greeting操作
-    def set_greeting_content(self, lines: List[str]):
-        """Greetingのコンテンツを設定"""
-        self.greeting.set_content(lines)
+        self.ui.display_greeting(self.stdscr)
+        
+        # キー入力を待つ
+        self.stdscr.getch()
+        
+        # Greeting表示を無効化
+        self.ui.set_show_greeting(False)
+        
+        self.debug_logger.info("Greeting displayed and disabled")
     
-    def add_greeting_content_line(self, line: str):
-        """Greetingのコンテンツ行を追加"""
-        self.greeting.add_content_line(line)
+    def _set_cursor_position(self):
+        """カーソル位置を設定"""
+        try:
+            # 現在のモードに応じてカーソル位置を設定
+            if self.editor.mode.mode_name == 'command':
+                # コマンドモードの場合はステータスラインのコマンド入力位置に
+                height, width = self.stdscr.getmaxyx()
+                y = height - 1  # ステータスラインの行
+                
+                # ステータスラインの構築ロジックを直接使用してコマンド位置を計算
+                # モード、ファイル情報、位置情報、行数情報の長さを計算
+                mode_text = f"--{self.editor.mode.mode_name.upper()}--"
+                mode_width = 15
+                
+                # ファイル情報
+                file_info = self.screen.file.get_file_info()
+                filename_width = 0
+                encoding_width = 0
+                if file_info.get('filename'):
+                    filename_width = 30
+                if file_info.get('encoding'):
+                    encoding_width = 12
+                
+                # 位置情報
+                cursor_row = self.editor.cursor.row
+                cursor_col = self.editor.cursor.col
+                position_text = f"{cursor_row+1}:{cursor_col+1}"
+                position_width = 10
+                
+                # 行数情報
+                total_lines = len(self.editor.buffer.lines)
+                line_count_text = f"L{total_lines}"
+                line_count_width = 8
+                
+                # セパレータ
+                separator = " | "
+                separator_width = len(separator)
+                
+                # コマンドセグメントの開始位置を計算
+                # 左から: モード + セパレータ + ファイル名 + セパレータ + エンコーディング + セパレータ + 位置 + セパレータ + 行数 + セパレータ
+                cmd_start = mode_width + separator_width
+                if filename_width > 0:
+                    cmd_start += filename_width + separator_width
+                if encoding_width > 0:
+                    cmd_start += encoding_width + separator_width
+                cmd_start += position_width + separator_width + line_count_width + separator_width
+                
+                # コマンドテキストの長さ
+                cmd_text = f":{self.editor.mode.cmd_buf}"
+                x = cmd_start + len(cmd_text)
+                
+                # 画面幅を超えないように調整
+                if x >= width:
+                    x = width - 1
+                
+                self.stdscr.move(y, x)
+            else:
+                # 通常のエディタモードの場合はカーソル位置に
+                cursor_row = self.editor.cursor.row
+                cursor_col = self.editor.cursor.col
+                height, width = self.stdscr.getmaxyx()
+                
+                # エディタ表示からカーソルの画面座標を取得
+                screen_row, screen_col = self.ui.editor_display.get_cursor_screen_pos(
+                    cursor_row, cursor_col, 0, 0)
+                
+                # カーソルが画面内にある場合のみ設定
+                if 0 <= screen_row < height - 1 and 0 <= screen_col < width:
+                    self.stdscr.move(screen_row, screen_col)
+                else:
+                    # カーソルが画面外の場合は安全な位置に移動
+                    safe_row = min(max(0, screen_row), height - 2)
+                    safe_col = min(max(0, screen_col), width - 1)
+                    self.stdscr.move(safe_row, safe_col)
+        except Exception as e:
+            self.debug_logger.log_error(e, "Screen._set_cursor_position")
     
-    def clear_greeting_content(self):
-        """Greetingのコンテンツをクリア"""
-        self.greeting.clear_content()
+    # サービスアクセサー
+    def get_editor_service(self):
+        """エディタサービスを取得"""
+        return self.container.get_editor_service()
     
-    def set_greeting_bottom_text(self, text: str):
-        """Greetingの下部テキストを設定"""
-        self.greeting.set_bottom_text(text)
+    def get_file_service(self):
+        """ファイルサービスを取得"""
+        return self.container.get_file_service()
     
-    def set_show_greeting(self, show: bool):
-        """Greeting表示の有効/無効を設定"""
-        self.show_greeting = show
-
+    def get_notification_service(self):
+        """通知サービスを取得"""
+        return self.container.get_notification_service()
+    
+    def get_config_service(self):
+        """設定サービスを取得"""
+        return self.container.get_config_service()
+    
+    # エディタ操作
+    def set_mode(self, mode_name: str):
+        """モードを切り替える"""
+        self.editor.set_mode(mode_name)
+    
+    def quit(self):
+        """エディタを終了"""
+        self.editor.quit()
+        self.running = False
+    
+    # ファイル操作
+    def load_file(self, filepath: str):
+        """ファイルを読み込み"""
+        return self.file.load_file(filepath)
+    
+    def save_file(self, filepath: Optional[str] = None):
+        """ファイルを保存"""
+        return self.file.save_file(filepath)
+    
+    def set_encoding(self, encoding: str):
+        """エンコーディングを設定"""
+        return self.file.set_encoding(encoding)
+    
+    def open_file_browser(self, directory: Optional[str] = None):
+        """ファイルブラウザーを開く"""
+        return self.file.open_file_browser(directory)
+    
+    # 通知操作
+    def notify(self, message: str, level=None, duration: float = 3.0, metadata=None):
+        """通知を追加"""
+        if level is None:
+            level = NotificationLevel.INFO
+        return self.notifications.add(message, level, duration, metadata)
+    
+    def notify_info(self, message: str, duration: float = 3.0):
+        """情報通知を追加"""
+        return self.notifications.add_info(message, duration)
+    
+    def notify_success(self, message: str, duration: float = 3.0):
+        """成功通知を追加"""
+        return self.notifications.add_success(message, duration)
+    
+    def notify_warning(self, message: str, duration: float = 4.0):
+        """警告通知を追加"""
+        return self.notifications.add_warning(message, duration)
+    
+    def notify_error(self, message: str, duration: float = 5.0):
+        """エラー通知を追加"""
+        return self.notifications.add_error(message, duration)
+    
+    def clear_notifications(self):
+        """すべての通知をクリア"""
+        self.notifications.clear()
+    
     # 設定操作
     def get_config(self, section: str = None, key: str = None):
         """設定値を取得"""
-        if section is None:
-            return self.config_manager.get_all_config()
-        elif key is None:
-            return self.config_manager.get_section(section)
-        else:
-            return self.config_manager.get_value(section, key)
+        return self.config.get_config(section, key)
     
     def set_config(self, section: str, key: str, value):
         """設定値を設定"""
-        self.config_manager.set_value(section, key, value)
-        self._apply_config()
+        return self.config.set_config(section, key, value)
     
     def reset_config(self, section: str = None):
         """設定をリセット"""
-        if section:
-            self.config_manager.reset_section(section)
-        else:
-            self.config_manager.reset_all()
-        self._apply_config()
+        return self.config.reset_config(section)
     
     def import_config(self, filepath: str):
-        """設定をインポート"""
-        self.config_manager.import_config(filepath)
-        self._apply_config()
+        """設定ファイルをインポート"""
+        return self.config.import_config(filepath)
     
     def print_config(self, section: str = None):
-        """設定を表示"""
-        self.config_manager.print_config(section)
+        """設定を出力"""
+        return self.config.print_config(section)

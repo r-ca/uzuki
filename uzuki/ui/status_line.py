@@ -47,8 +47,8 @@ class StatusLineManager:
         """セパレータを設定"""
         self.separator = separator
     
-    def render(self, width: int) -> str:
-        """ステータスラインをレンダリング"""
+    def render_content(self, width: int) -> str:
+        """ステータスラインの内容をレンダリング"""
         if not self.segments:
             return ''
         
@@ -105,6 +105,26 @@ class StatusLineManager:
         
         return self.separator.join(result_parts)
     
+    def update(self, content: str):
+        """ステータスラインの内容を更新"""
+        # 一時的なセグメントとして保存
+        self.add_segment('temp', content, width=None, align='left', priority=0)
+    
+    def render(self, stdscr):
+        """ステータスラインを描画"""
+        height, width = stdscr.getmaxyx()
+        content = self.render_content(width)
+        
+        # 最下行に描画
+        y = height - 1
+        try:
+            stdscr.addstr(y, 0, content, self.default_style)
+        except curses.error:
+            # 画面端でのエラーを防ぐ
+            safe_content = content[:width-1]
+            if safe_content:
+                stdscr.addstr(y, 0, safe_content, self.default_style)
+    
     def get_style(self, name: str) -> int:
         """セグメントのスタイルを取得"""
         if name in self.segments:
@@ -115,6 +135,17 @@ class StatusLineBuilder:
     """ステータスライン構築用のビルダークラス"""
     def __init__(self, manager: StatusLineManager):
         self.manager = manager
+    
+    def add_segment(self, name: str, content: str, width=None, align: str = 'left', priority: int = 0):
+        """セグメントを追加"""
+        self.manager.add_segment(name, content, width, align, priority)
+        return self
+    
+    def build(self) -> str:
+        """ステータスラインを構築"""
+        # 画面幅を取得（仮の値、実際は適切に取得する必要がある）
+        width = 80
+        return self.manager.render_content(width)
     
     def mode(self, mode_name: str):
         """モード表示セグメント"""

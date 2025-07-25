@@ -20,11 +20,14 @@ class CommandMode(BaseMode):
         }
     
     def handle_default(self, key_info):
-        """デフォルト処理：文字入力"""
+        """デフォルト処理：文字入力・バックスペース"""
+        if key_info.key_name == 'backspace':
+            self._delete_backward()
+            return
         if key_info.is_printable and key_info.char:
             self.cmd_buf += key_info.char
             # 画面更新フラグを設定
-            self.screen.needs_redraw = True
+            self.screen.editor.needs_redraw = True
     
     def _execute_command(self):
         """コマンドを実行"""
@@ -46,4 +49,4 @@ class CommandMode(BaseMode):
         if self.cmd_buf:
             self.cmd_buf = self.cmd_buf[:-1]
             # 画面更新フラグを設定
-            self.screen.needs_redraw = True
+            self.screen.editor.needs_redraw = True

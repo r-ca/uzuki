@@ -5,8 +5,8 @@ class KeyInfo:
     def __init__(self, raw_code: int):
         self.raw_code = raw_code
         self.key_name = Key.get_key_name(raw_code)
-        self.char = chr(raw_code) if raw_code < 256 else None
-        self.is_printable = raw_code < 256
+        self.char = chr(raw_code) if raw_code < 256 and raw_code >= 32 else None
+        self.is_printable = 32 <= raw_code < 127  # 印字可能文字の範囲
 
 class InputHandler:
     """キー情報作成クラス"""

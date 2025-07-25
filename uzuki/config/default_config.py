@@ -161,6 +161,9 @@ class DefaultConfig:
     
     @classmethod
     def get_value(cls, section_name: str, key: str, default=None):
-        """指定された設定値を取得"""
+        """設定値を取得"""
         section = cls.get_section(section_name)
-        return section.get(key, default) 
+        return section.get(key, default)
+
+# デフォルト設定の辞書
+DEFAULT_CONFIG = DefaultConfig.get_all_config() 
